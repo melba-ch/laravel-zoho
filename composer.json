@@ -1,0 +1,43 @@
+{
+  "name": "melba-ch/laravel-zoho",
+  "description": "Provide an interface to connect your Laravel application to Zoho",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "MelbaCh\\LaravelZoho\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "MelbaCh\\LaravelZoho\\Tests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Clément Baconnier",
+      "email": "clement.baconnier@gmail.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "MelbaCh\\LaravelZoho\\LaravelZohoServiceProvider"
+      ],
+      "aliases": {
+        "ZohoClient": "MelbaCh\\LaravelZoho\\Facades\\ZohoClient"
+      }
+    }
+  },
+  "require": {
+    "php": "^7.4|^8.0",
+    "ext-json": "*",
+    "league/oauth2-client": "^2.6"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^6.22"
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
+  }
+}
