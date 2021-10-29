@@ -1,6 +1,6 @@
 {
   "name": "melba-ch/laravel-zoho",
-  "description": "Provide an interface to connect your Laravel application to Zoho",
+  "description": "This package provides an interface to connect your Laravel application to Zoho",
   "type": "library",
   "license": "MIT",
   "autoload": {

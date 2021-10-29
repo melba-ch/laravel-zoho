@@ -3,7 +3,7 @@
 **This is currently in development and should not be used in a production environment.**
 
 
-This package provide an interface to connect your Laravel application to Zoho  
+This package provides an interface to connect your Laravel application to Zoho  
 
 ## Installation
 
