@@ -13,6 +13,7 @@ return [
      * Middleware to generate a Token
      */
     'middleware'     => [
+        'web',
         \MelbaCh\LaravelZoho\Middleware\VerifyZohoCredentialsDoesntExists::class,
     ],
 
