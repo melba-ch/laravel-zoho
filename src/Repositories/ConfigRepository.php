@@ -18,5 +18,5 @@ interface ConfigRepository
 
     public function clientId(): string;
 
-    public function currentOrganizationId(): ?int;
+    public function currentOrganizationId(): ?string;
 }

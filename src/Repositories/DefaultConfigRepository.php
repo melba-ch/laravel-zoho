@@ -46,7 +46,7 @@ class DefaultConfigRepository implements ConfigRepository
         return $this->config['secrets']['client_id'];
     }
 
-    public function currentOrganizationId(): ?int
+    public function currentOrganizationId(): ?string
     {
         return $this->config['parameters']['current_organization_id'];
     }

@@ -51,7 +51,7 @@ class DatabaseConfigRepository implements ConfigRepository
         return $this->get()['secrets']['client_id'];
     }
 
-    public function currentOrganizationId(): ?int
+    public function currentOrganizationId(): ?string
     {
         return $this->get()['parameters']['current_organization_id'];
     }
