@@ -7,6 +7,7 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use MelbaCh\LaravelZoho\Auth\ZohoAuthProvider;
 use MelbaCh\LaravelZoho\Repositories\AccessTokenRepository;
+use MelbaCh\LaravelZoho\ZohoPendingRequest;
 use MelbaCh\LaravelZoho\ZohoResponse;
 
 class ZohoHttp extends Factory
@@ -23,7 +24,7 @@ class ZohoHttp extends Factory
         // todo; prevent refresh when using ::fake()
         if (in_array($method, ['delete', 'get', 'head', 'patch', 'post', 'put', 'send'])) {
             // Refresh the access token if needed before performing a request
-        $this->refreshAccessToken();
+            $this->refreshAccessToken();
         }
 
         $response = tap($this->newPendingRequest(), function (PendingRequest $request)
@@ -32,9 +33,14 @@ class ZohoHttp extends Factory
                 ->withHeaders($this->headers())
                 ->stub($this->stubCallbacks);
         })->{$method}(...$parameters);
+
         if ($response instanceof Response) {
             return ZohoResponse::fromResponse($response);
         }
+        if ($response instanceof PendingRequest) {
+            return ZohoPendingRequest::fromPendingRequest($response);
+        }
+
         return $response;
     }
 
