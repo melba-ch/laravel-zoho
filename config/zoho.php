@@ -1,8 +1,6 @@
 <?php
 
 return [
-    'default_module' => \MelbaCh\LaravelZoho\ZohoModules::Crm,
-
     /**
      * Routing
      */
