@@ -14,8 +14,6 @@ class ZohoClientFactory extends Factory
 {
     public ZohoAuthProvider $provider;
     public AccessTokenRepository $accessTokenRepository;
-    public string $module;
-    public array $errors = [];
 
     public function __construct(
         Dispatcher $dispatcher = null
@@ -25,11 +23,6 @@ class ZohoClientFactory extends Factory
         $this->provider = app(ZohoAuthProvider::class);
         $this->accessTokenRepository = app(AccessTokenRepository::class);
         $this->refreshAccessToken();
-    }
-
-    public function fake($callback = null)
-    {
-        return parent::fake($callback);
     }
 
     /**
