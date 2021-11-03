@@ -3,7 +3,7 @@
 namespace MelbaCh\LaravelZoho\Middleware;
 
 use Closure;
-use MelbaCh\LaravelZoho\Facades\Zoho;
+use MelbaCh\LaravelZoho\Facades\ZohoHttp;
 
 class VerifyZohoCredentialsDoesntExists
 {
@@ -18,7 +18,7 @@ class VerifyZohoCredentialsDoesntExists
      */
     public function handle($request, Closure $next)
     {
-        if (Zoho::hasAccessToken()) {
+        if (ZohoHttp::hasAccessToken()) {
             abort(403);
         }
         return $next($request);

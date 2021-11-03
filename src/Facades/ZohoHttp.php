@@ -4,10 +4,10 @@ namespace MelbaCh\LaravelZoho\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Zoho extends Facade
+class ZohoHttp extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \MelbaCh\LaravelZoho\Zoho::class;
+        return \MelbaCh\LaravelZoho\Clients\ZohoClientFactory::class;
     }
 }

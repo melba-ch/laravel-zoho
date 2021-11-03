@@ -2,7 +2,7 @@
 
 namespace MelbaCh\LaravelZoho\Tests\Factories;
 
-use MelbaCh\LaravelZoho\Factories\UrlFactory;
+use MelbaCh\LaravelZoho\Clients\ZohoURLFactory;
 use MelbaCh\LaravelZoho\Repositories\DefaultConfigRepository;
 use MelbaCh\LaravelZoho\Tests\TestCase;
 use MelbaCh\LaravelZoho\ZohoModules;
@@ -25,28 +25,28 @@ class UrlFactoryTest extends TestCase
     /** @test */
     public function it_build_url_for_a_module(): void
     {
-        $urlFactory = app(UrlFactory::class);
+        $urlFactory = app(ZohoURLFactory::class);
 
         $this->assertEquals(
             'https://www.zohoapis.eu/crm/v2/users/4',
-            $urlFactory->build(ZohoModules::Crm, '/users/4')
+            $urlFactory->make(ZohoModules::Crm, '/users/4')
         );
 
         $this->assertEquals(
             'https://books.zoho.eu/api/v3/invoices?organization_id=1234',
-            $urlFactory->build(ZohoModules::Books, '/invoices')
+            $urlFactory->make(ZohoModules::Books, '/invoices')
         );
 
         $this->assertEquals(
             'https://recruit.zoho.eu/recruit/v2/users',
-            $urlFactory->build(ZohoModules::Recruit, '/users')
+            $urlFactory->make(ZohoModules::Recruit, '/users')
         );
     }
 
     /** @test */
     public function it_returns_the_base_urls_for_the_api(): void
     {
-        $urlFactory = app(UrlFactory::class);
+        $urlFactory = app(ZohoURLFactory::class);
 
         $this->assertEquals(
             'https://www.zohoapis.eu/crm/v2',
@@ -67,7 +67,7 @@ class UrlFactoryTest extends TestCase
     /** @test */
     public function it_returns_the_urls_for_the_authentication(): void
     {
-        $urlFactory = app(UrlFactory::class);
+        $urlFactory = app(ZohoURLFactory::class);
 
         $this->assertEquals(
             'https://accounts.zoho.eu/oauth/v2/auth',
@@ -88,16 +88,16 @@ class UrlFactoryTest extends TestCase
     /** @test */
     public function it_add_the_current_organization_id_to_url_when_using_books(): void
     {
-        $urlFactory = app(UrlFactory::class);
+        $urlFactory = app(ZohoURLFactory::class);
 
         $this->assertEquals(
             'https://books.zoho.eu/api/v3/invoices?organization_id=1234',
-            $urlFactory->build(ZohoModules::Books, '/invoices')
+            $urlFactory->make(ZohoModules::Books, '/invoices')
         );
 
         $this->assertEquals(
             'https://books.zoho.eu/api/v3/invoices?param_1=param&organization_id=1234',
-            $urlFactory->build(ZohoModules::Books, '/invoices?param_1=param')
+            $urlFactory->make(ZohoModules::Books, '/invoices?param_1=param')
         );
         
     }
@@ -111,7 +111,7 @@ class UrlFactoryTest extends TestCase
         });
         $this->assertEquals(
             'https://books.zoho.eu/api/v3',
-            app(UrlFactory::class)->baseApiUrl(ZohoModules::Books)
+            app(ZohoURLFactory::class)->baseApiUrl(ZohoModules::Books)
         );
 
         $this->mock(DefaultConfigRepository::class, static function (MockInterface $repository)
@@ -120,7 +120,7 @@ class UrlFactoryTest extends TestCase
         });
         $this->assertEquals(
             'https://books.zoho.com/api/v3',
-            app(UrlFactory::class)->baseApiUrl(ZohoModules::Books)
+            app(ZohoURLFactory::class)->baseApiUrl(ZohoModules::Books)
         );
     }
 }

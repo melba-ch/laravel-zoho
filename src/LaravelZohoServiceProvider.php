@@ -5,6 +5,8 @@ namespace MelbaCh\LaravelZoho;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use MelbaCh\LaravelZoho\Auth\ZohoAuthProvider;
+use MelbaCh\LaravelZoho\Clients\ZohoClientFactory;
+use MelbaCh\LaravelZoho\Clients\ZohoURLFactory;
 use MelbaCh\LaravelZoho\Controllers\ZohoAuthController;
 use MelbaCh\LaravelZoho\Repositories\AccessTokenRepository;
 use MelbaCh\LaravelZoho\Repositories\ConfigRepository;
@@ -49,12 +51,15 @@ class LaravelZohoServiceProvider extends ServiceProvider
             ]);
         });
 
-
         $this->app->bind(
-            \MelbaCh\LaravelZoho\Facades\Zoho::class,
-            Zoho::class
+            \MelbaCh\LaravelZoho\Facades\ZohoHttp::class,
+            ZohoClientFactory::class
         );
 
+        $this->app->bind(
+            \MelbaCh\LaravelZoho\Facades\ZohoUrl::class,
+            ZohoURLFactory::class
+        );
 
         $this->mergeConfigFrom(__DIR__ . '/../config/zoho.php', 'zoho');
     }

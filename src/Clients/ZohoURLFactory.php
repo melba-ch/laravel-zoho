@@ -1,12 +1,12 @@
 <?php
 
-namespace MelbaCh\LaravelZoho\Factories;
+namespace MelbaCh\LaravelZoho\Clients;
 
 use MelbaCh\LaravelZoho\Repositories\ConfigRepository;
 use MelbaCh\LaravelZoho\ZohoModules;
 use Str;
 
-class UrlFactory
+class ZohoURLFactory
 {
     protected ConfigRepository $config;
 
@@ -16,17 +16,23 @@ class UrlFactory
         $this->config = $configRepository;
     }
 
-    public function build(string $module, string $url): string
+    public function make(string $module, string $url, array $parameters = []): string
     {
         if (Str::startsWith($url, '/')) {
             $url = Str::replaceFirst('/', '', $url);
         }
 
         if ($module === ZohoModules::Books) {
-            return $this->books($url);
+            $url = $this->books($url);
+        } else {
+            $url = $this->default($module, $url);
         }
 
-        return $this->default($module, $url);
+        foreach ($parameters as $parameter => $value) {
+            $url = $this->addParameterToUrlQuery($url, $parameter, $value);
+        }
+
+        return $url;
     }
 
     protected function default(string $module, string $url)
