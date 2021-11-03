@@ -6,7 +6,7 @@ use Illuminate\Http\Client\Request;
 use Http;
 use MelbaCh\LaravelZoho\Auth\ZohoAccessToken;
 use MelbaCh\LaravelZoho\Auth\ZohoAuthProvider;
-use MelbaCh\LaravelZoho\Clients\ZohoClientFactory;
+use MelbaCh\LaravelZoho\Clients\ZohoHttp;
 use MelbaCh\LaravelZoho\Repositories\AccessTokenRepository;
 use MelbaCh\LaravelZoho\Tests\TestCase;
 use MelbaCh\LaravelZoho\ZohoResponse;
@@ -14,7 +14,7 @@ use Mockery\MockInterface;
 
 class ZohoHttpTest extends TestCase
 {
-    protected ZohoClientFactory $zohoClientFactory;
+    protected ZohoHttp $zohoClientFactory;
 
     protected function setUp(): void
     {
@@ -34,7 +34,7 @@ class ZohoHttpTest extends TestCase
             $repository->shouldReceive('getAccessToken')->andReturn($accessToken);
         });
 
-        $this->zohoClientFactory = new ZohoClientFactory;
+        $this->zohoClientFactory = new ZohoHttp;
     }
 
     protected function tearDown(): void

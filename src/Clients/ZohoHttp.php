@@ -2,7 +2,6 @@
 
 namespace MelbaCh\LaravelZoho\Clients;
 
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
@@ -10,21 +9,8 @@ use MelbaCh\LaravelZoho\Auth\ZohoAuthProvider;
 use MelbaCh\LaravelZoho\Repositories\AccessTokenRepository;
 use MelbaCh\LaravelZoho\ZohoResponse;
 
-class ZohoClientFactory extends Factory
+class ZohoHttp extends Factory
 {
-    public ZohoAuthProvider $provider;
-    public AccessTokenRepository $accessTokenRepository;
-
-    public function __construct(
-        Dispatcher $dispatcher = null
-    ) {
-        parent::__construct($dispatcher);
-
-        $this->provider = app(ZohoAuthProvider::class);
-        $this->accessTokenRepository = app(AccessTokenRepository::class);
-        $this->refreshAccessToken();
-    }
-
     /**
      * @inheritDoc
      */
@@ -33,6 +19,9 @@ class ZohoClientFactory extends Factory
         if (static::hasMacro($method)) {
             return $this->macroCall($method, $parameters);
         }
+
+        // todo; prevent refresh when using ::fake()
+        $this->refreshAccessToken();
 
         $response = tap($this->newPendingRequest(), function (PendingRequest $request)
         {
@@ -49,7 +38,7 @@ class ZohoClientFactory extends Factory
     public function headers(): array
     {
         $headers = [];
-        if ($token = $this->accessTokenRepository->get()) {
+        if ($token = app(AccessTokenRepository::class)->get()) {
             $headers['Authorization'] = "Zoho-oauthtoken {$token->getToken()}";
         }
         return $headers;
@@ -57,12 +46,15 @@ class ZohoClientFactory extends Factory
 
     public function hasAccessToken(): bool
     {
-        return $this->accessTokenRepository->exists();
+        return app(AccessTokenRepository::class)->exists();
     }
 
     private function refreshAccessToken()
     {
-        $accessToken = $this->accessTokenRepository->get();
+        $provider = app(ZohoAuthProvider::class);
+        $accessTokenRepository = app(AccessTokenRepository::class);
+
+        $accessToken = $accessTokenRepository->get();
 
         if (! $accessToken) {
             return;
@@ -71,7 +63,7 @@ class ZohoClientFactory extends Factory
         $refreshToken = $accessToken->getRefreshToken();
 
         if ($accessToken->hasExpired()) {
-            $accessToken = $this->provider->getAccessToken('refresh_token', [
+            $accessToken = $provider->getAccessToken('refresh_token', [
                 'refresh_token' => $refreshToken,
             ]);
 
@@ -79,7 +71,7 @@ class ZohoClientFactory extends Factory
             // https://help.zoho.com/portal/community/topic/refresh-token-missing
             $accessToken->setRefreshToken($refreshToken);
 
-            $this->accessTokenRepository->store($accessToken);
+            $accessTokenRepository->store($accessToken);
         }
     }
 }

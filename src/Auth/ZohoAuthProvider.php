@@ -8,7 +8,7 @@ use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
-use MelbaCh\LaravelZoho\Clients\ZohoURLFactory;
+use MelbaCh\LaravelZoho\Clients\ZohoUrl;
 use MelbaCh\LaravelZoho\Repositories\ConfigRepository;
 use Psr\Http\Message\ResponseInterface;
 
@@ -23,7 +23,7 @@ class ZohoAuthProvider extends AbstractProvider
      */
     public function getBaseAuthorizationUrl(): string
     {
-        return app(ZohoURLFactory::class)->oauthApiUrl('authorization_url');
+        return app(ZohoUrl::class)->oauthApiUrl('authorization_url');
     }
 
     /**
@@ -37,7 +37,7 @@ class ZohoAuthProvider extends AbstractProvider
      */
     public function getBaseAccessTokenUrl(array $params): string
     {
-        return app(ZohoURLFactory::class)->oauthApiUrl('access_token_url');
+        return app(ZohoUrl::class)->oauthApiUrl('access_token_url');
     }
 
     /**
