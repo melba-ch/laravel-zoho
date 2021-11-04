@@ -21,11 +21,8 @@ class ZohoHttp extends Factory
             return $this->macroCall($method, $parameters);
         }
 
-        // todo; prevent refresh when using ::fake()
-        if (in_array($method, ['delete', 'get', 'head', 'patch', 'post', 'put', 'send'])) {
-            // Refresh the access token if needed before performing a request
-            $this->refreshAccessToken();
-        }
+        // todo: prevent refresh when using ::fake()
+        $this->refreshAccessToken();
 
         $response = tap($this->newPendingRequest(), function (PendingRequest $request)
         {
@@ -58,7 +55,7 @@ class ZohoHttp extends Factory
         return app(AccessTokenRepository::class)->exists();
     }
 
-    private function refreshAccessToken()
+    private function refreshAccessToken(): void
     {
         $provider = app(ZohoAuthProvider::class);
         $accessTokenRepository = app(AccessTokenRepository::class);
