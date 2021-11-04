@@ -1,6 +1,6 @@
 <?php
 
-namespace MelbaCh\LaravelZoho\Tests\Factories;
+namespace MelbaCh\LaravelZoho\Tests\Clients;
 
 use MelbaCh\LaravelZoho\Clients\ZohoUrl;
 use MelbaCh\LaravelZoho\Repositories\DefaultConfigRepository;
@@ -9,7 +9,7 @@ use MelbaCh\LaravelZoho\ZohoModules;
 use Mockery\MockInterface;
 
 
-class UrlFactoryTest extends TestCase
+class ZohoUrlTest extends TestCase
 {
     protected function setUp(): void
     {
