@@ -12,6 +12,8 @@ use MelbaCh\LaravelZoho\ZohoResponse;
 
 class ZohoHttp extends Factory
 {
+    protected bool $isFaking = false;
+
     /**
      * @inheritDoc
      */
@@ -21,8 +23,9 @@ class ZohoHttp extends Factory
             return $this->macroCall($method, $parameters);
         }
 
-        // todo: prevent refresh when using ::fake()
-        $this->refreshAccessToken();
+        if ($this->isFaking === false) {
+            $this->refreshAccessToken();
+        }
 
         $response = tap($this->newPendingRequest(), function (PendingRequest $request)
         {
@@ -39,6 +42,12 @@ class ZohoHttp extends Factory
         }
 
         return $response;
+    }
+
+    public function fake($callback = null)
+    {
+        $this->isFaking = true;
+        return parent::fake($callback);
     }
 
     public function headers(): array

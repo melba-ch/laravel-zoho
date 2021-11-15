@@ -119,6 +119,30 @@ class ZohoHttpTest extends TestCase
     }
 
     /** @test */
+    public function it_prevent_refresh_token_call_when_using_fake(): void
+    {
+        $accessToken = $this->mock(ZohoAccessToken::class, static function (MockInterface $mock): void
+        {
+            $mock->shouldReceive('hasExpired')->never();
+            $mock->shouldReceive('getRefreshToken')->never();
+            $mock->shouldReceive('getToken')->once();
+        });
+
+        $this->mock(AccessTokenRepository::class, static function (MockInterface $repository) use ($accessToken)
+        {
+            $repository->shouldReceive('exists')->andReturn(true);
+            $repository->shouldReceive('get')->andReturn($accessToken);
+            $repository->shouldReceive('store');
+        });
+
+        $this->zohoClientHttp->fake();
+
+        $this->zohoClientHttp->get('/');
+
+        $this->assertInstanceOf(MockInterface::class, $accessToken);
+    }
+
+    /** @test */
     public function it_call_refresh_token_when_performing_a_request(): void
     {
         $accessToken = $this->mock(ZohoAccessToken::class, static function (MockInterface $mock): void
@@ -136,6 +160,11 @@ class ZohoHttpTest extends TestCase
         });
 
         $this->zohoClientHttp->fake();
+
+        $reflection = new \ReflectionClass($this->zohoClientHttp);
+        $reflectionProperty = $reflection->getProperty('isFaking');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($this->zohoClientHttp, false);
 
         $this->zohoClientHttp->get('/');
 
@@ -160,6 +189,11 @@ class ZohoHttpTest extends TestCase
         });
 
         $this->zohoClientHttp->fake();
+
+        $reflection = new \ReflectionClass($this->zohoClientHttp);
+        $reflectionProperty = $reflection->getProperty('isFaking');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($this->zohoClientHttp, false);
 
         $this->zohoClientHttp
             ->asForm()
