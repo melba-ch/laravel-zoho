@@ -51,16 +51,6 @@ class LaravelZohoServiceProvider extends ServiceProvider
             ]);
         });
 
-        $this->app->bind(
-            \MelbaCh\LaravelZoho\Facades\ZohoHttp::class,
-            ZohoHttp::class
-        );
-
-        $this->app->bind(
-            \MelbaCh\LaravelZoho\Facades\ZohoUrl::class,
-            ZohoUrl::class
-        );
-
         $this->mergeConfigFrom(__DIR__ . '/../config/zoho.php', 'zoho');
     }
 }
