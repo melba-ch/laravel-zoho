@@ -123,4 +123,47 @@ class ZohoUrlFactoryTest extends TestCase
             app(ZohoUrlFactory::class)->baseApiUrl(ZohoModules::Books)
         );
     }
+
+    /** @test */
+    public function it_build_using_api_method(): void
+    {
+        $urlFactory = app(ZohoUrlFactory::class);
+
+        $this->assertEquals(
+            'https://www.zohoapis.eu/crm/v2/users/4',
+            $urlFactory->api(ZohoModules::Crm, '/users/4')
+        );
+
+        $this->assertEquals(
+            'https://books.zoho.eu/api/v3/invoices?organization_id=1234',
+            $urlFactory->api(ZohoModules::Books, '/invoices')
+        );
+
+        $this->assertEquals(
+            'https://recruit.zoho.eu/recruit/v2/users',
+            $urlFactory->api(ZohoModules::Recruit, '/users')
+        );
+    }
+
+
+    /** @test */
+    public function it_build_using_web_method(): void
+    {
+        $urlFactory = app(ZohoUrlFactory::class);
+
+        $this->assertEquals(
+            'https://crm.zoho.eu/crm/1234/tab/Potentials/292528000000000000',
+            $urlFactory->web(ZohoModules::Crm, '/tab/Potentials/292528000000000000')
+        );
+
+        $this->assertEquals(
+            'https://books.zoho.eu/app#/contacts/139996000000000000',
+            $urlFactory->web(ZohoModules::Books, '/contacts/139996000000000000')
+        );
+
+        $this->assertEquals(
+            'https://recruit.zoho.eu/recruit/1234/EntityInfo.do?module=Candidates&id=31529000000000000&submodule=Candidates',
+            $urlFactory->web(ZohoModules::Recruit, '/EntityInfo.do?module=Candidates&id=31529000000000000&submodule=Candidates')
+        );
+    }
 }

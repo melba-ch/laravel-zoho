@@ -16,6 +16,11 @@ class ZohoUrlFactory
         $this->config = $configRepository;
     }
 
+    public function api(string $module, string $url, array $parameters = [])
+    {
+        return $this->make($module, $url, $parameters);
+    }
+
     public function make(string $module, string $url, array $parameters = []): string
     {
         if (Str::startsWith($url, '/')) {
@@ -34,6 +39,22 @@ class ZohoUrlFactory
 
         return $url;
     }
+
+    public function web(string $module, string $url, array $parameters = [])
+    {
+        if (Str::startsWith($url, '/')) {
+            $url = Str::replaceFirst('/', '', $url);
+        }
+
+        $url = Str::finish($this->baseWebUrl($module), '/') . $url;
+
+        foreach ($parameters as $parameter => $value) {
+            $url = $this->addParameterToUrlQuery($url, $parameter, $value);
+        }
+
+        return $url;
+    }
+
 
     protected function default(string $module, string $url)
     {
@@ -118,6 +139,36 @@ class ZohoUrlFactory
                 'CN' => 'https://accounts.zoho.com.cn/oauth/v2/token/revoke',
             ],
         ][$type][$region];
+    }
+
+    public function baseWebUrl(string $module): string
+    {
+        $region = $this->config->region() ?? 'US';
+        $organization = $this->config->currentOrganizationId();
+
+        return [
+            ZohoModules::Books   => [
+                'EU' => 'https://books.zoho.eu/app#',
+                'US' => 'https://books.zoho.com/app#',
+                'IN' => 'https://books.zoho.in/app#',
+                'AU' => 'https://books.zoho.com.au/app#',
+                'CN' => 'https://books.zoho.com.cn/app#',
+            ],
+            ZohoModules::Crm     => [
+                'EU' => "https://crm.zoho.eu/crm/{$organization}",
+                'US' => "https://crm.zoho.com/crm/{$organization}",
+                'IN' => "https://crm.zoho.in/crm/{$organization}",
+                'AU' => "https://crm.zoho.com.eu/crm/{$organization}",
+                'CN' => "https://crm.zoho.com.cn/crm/{$organization}",
+            ],
+            ZohoModules::Recruit => [
+                'EU' => "https://recruit.zoho.eu/recruit/{$organization}",
+                'US' => "https://recruit.zoho.com/recruit/{$organization}",
+                'IN' => "https://recruit.zoho.in/recruit/{$organization}",
+                'AU' => "https://recruit.zoho.com.eu/recruit/{$organization}",
+                'CN' => "https://recruit.zoho.com.cn/recruit/{$organization}",
+            ],
+        ][$module][$region];
     }
 
 }
