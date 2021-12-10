@@ -10,7 +10,7 @@ use MelbaCh\LaravelZoho\Repositories\AccessTokenRepository;
 use MelbaCh\LaravelZoho\ZohoPendingRequest;
 use MelbaCh\LaravelZoho\ZohoResponse;
 
-class ZohoHttp extends Factory
+class ZohoHttpFactory extends Factory
 {
     protected bool $isFaking = false;
 

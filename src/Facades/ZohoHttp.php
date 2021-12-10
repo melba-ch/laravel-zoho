@@ -8,6 +8,6 @@ class ZohoHttp extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \MelbaCh\LaravelZoho\Clients\ZohoHttp::class;
+        return \MelbaCh\LaravelZoho\Clients\ZohoHttpFactory::class;
     }
 }

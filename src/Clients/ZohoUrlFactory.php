@@ -6,7 +6,7 @@ use MelbaCh\LaravelZoho\Repositories\ConfigRepository;
 use MelbaCh\LaravelZoho\ZohoModules;
 use Str;
 
-class ZohoUrl
+class ZohoUrlFactory
 {
     protected ConfigRepository $config;
 

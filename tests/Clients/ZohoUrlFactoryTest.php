@@ -2,14 +2,14 @@
 
 namespace MelbaCh\LaravelZoho\Tests\Clients;
 
-use MelbaCh\LaravelZoho\Clients\ZohoUrl;
+use MelbaCh\LaravelZoho\Clients\ZohoUrlFactory;
 use MelbaCh\LaravelZoho\Repositories\DefaultConfigRepository;
 use MelbaCh\LaravelZoho\Tests\TestCase;
 use MelbaCh\LaravelZoho\ZohoModules;
 use Mockery\MockInterface;
 
 
-class ZohoUrlTest extends TestCase
+class ZohoUrlFactoryTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -25,7 +25,7 @@ class ZohoUrlTest extends TestCase
     /** @test */
     public function it_build_url_for_a_module(): void
     {
-        $urlFactory = app(ZohoUrl::class);
+        $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
             'https://www.zohoapis.eu/crm/v2/users/4',
@@ -46,7 +46,7 @@ class ZohoUrlTest extends TestCase
     /** @test */
     public function it_returns_the_base_urls_for_the_api(): void
     {
-        $urlFactory = app(ZohoUrl::class);
+        $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
             'https://www.zohoapis.eu/crm/v2',
@@ -67,7 +67,7 @@ class ZohoUrlTest extends TestCase
     /** @test */
     public function it_returns_the_urls_for_the_authentication(): void
     {
-        $urlFactory = app(ZohoUrl::class);
+        $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
             'https://accounts.zoho.eu/oauth/v2/auth',
@@ -88,7 +88,7 @@ class ZohoUrlTest extends TestCase
     /** @test */
     public function it_add_the_current_organization_id_to_url_when_using_books(): void
     {
-        $urlFactory = app(ZohoUrl::class);
+        $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
             'https://books.zoho.eu/api/v3/invoices?organization_id=1234',
@@ -111,7 +111,7 @@ class ZohoUrlTest extends TestCase
         });
         $this->assertEquals(
             'https://books.zoho.eu/api/v3',
-            app(ZohoUrl::class)->baseApiUrl(ZohoModules::Books)
+            app(ZohoUrlFactory::class)->baseApiUrl(ZohoModules::Books)
         );
 
         $this->mock(DefaultConfigRepository::class, static function (MockInterface $repository)
@@ -120,7 +120,7 @@ class ZohoUrlTest extends TestCase
         });
         $this->assertEquals(
             'https://books.zoho.com/api/v3',
-            app(ZohoUrl::class)->baseApiUrl(ZohoModules::Books)
+            app(ZohoUrlFactory::class)->baseApiUrl(ZohoModules::Books)
         );
     }
 }

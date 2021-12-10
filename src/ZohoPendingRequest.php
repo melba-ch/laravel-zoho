@@ -4,13 +4,13 @@ namespace MelbaCh\LaravelZoho;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
-use MelbaCh\LaravelZoho\Clients\ZohoHttp;
+use MelbaCh\LaravelZoho\Clients\ZohoHttpFactory;
 
 class ZohoPendingRequest extends PendingRequest
 {
     public static function fromPendingRequest(PendingRequest $pendingRequest): ZohoPendingRequest
     {
-        $instance = new static(app(ZohoHttp::class));
+        $instance = new static(app(ZohoHttpFactory::class));
         $instance->loadFromPendingRequest($pendingRequest);
         return $instance;
     }
