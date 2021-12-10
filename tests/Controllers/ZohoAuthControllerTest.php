@@ -88,7 +88,7 @@ class ZohoAuthControllerTest extends TestCase
         session(['oauth2state' => 'ok']);
 
         $this->get('oauth2/zoho?code=ok&state=ok')
-            ->assertRedirect(config('zoho.home'));
+            ->assertRedirect(config('zoho.redirect_url'));
     }
 
     /** @test */

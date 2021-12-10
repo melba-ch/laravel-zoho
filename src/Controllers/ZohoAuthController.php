@@ -33,7 +33,7 @@ class ZohoAuthController extends Controller
         $this->verifyState();
         $this->getAccessToken($accessTokenRepository);
 
-        return redirect(config('zoho.home', '/'));
+        return redirect(config('zoho.redirect_url', '/'));
     }
 
     /**

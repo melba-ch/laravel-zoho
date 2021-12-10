@@ -4,13 +4,13 @@ return [
     /**
      * Routing
      */
-    'route'          => '/oauth2/zoho',
-    'home'           => '/',
+    'url'          => '/oauth2/zoho',
+    'redirect_url' => '/',
 
     /**
      * Middleware to generate a Token
      */
-    'middleware'     => [
+    'middleware'   => [
         'web',
         \MelbaCh\LaravelZoho\Middleware\VerifyZohoCredentialsDoesntExists::class,
     ],

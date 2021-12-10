@@ -27,7 +27,7 @@ class LaravelZohoServiceProvider extends ServiceProvider
             ], 'laravel-zoho-migrations');
         }
 
-        Route::get(config('zoho.route', '/oauth2/zoho'), [ZohoAuthController::class, 'requestToken']);
+        Route::get(config('zoho.url', '/oauth2/zoho'), [ZohoAuthController::class, 'requestToken']);
     }
 
     public function register()
