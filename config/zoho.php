@@ -9,10 +9,10 @@ return [
 
     // When requesting an accessToken, the API may return an error,
     // The controller will redirect the user to `on_error_url`
-    // with the parameter `error-code=XXX`
+    // with the error flashed in the session with the key `zoho.access_token_error`
     // known error code:
     //      -  403: invalid_client_secret
-    //      -  400: fallback on unknown error
+    //      -  500: fallback on unknown error
     'on_error_url' => '/',
 
     /**

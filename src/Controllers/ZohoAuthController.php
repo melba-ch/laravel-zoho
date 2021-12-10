@@ -33,7 +33,7 @@ class ZohoAuthController extends Controller
         $this->verifyState();
 
         $token = $this->getAccessToken($accessTokenRepository);
-        if($token instanceof RedirectResponse){
+        if ($token instanceof RedirectResponse) {
             return $token;
         }
 
@@ -79,10 +79,12 @@ class ZohoAuthController extends Controller
                 'redirect_uri' => url()->current(),
             ]);
         } catch (IdentityProviderException $e) {
-            $url = config('zoho.on_error_url', '/')
-                . '?' . http_build_query(['error' => $e->getCode()]);
+            request()->session()->flash('zoho.access_token_error', [
+                'code'     => $e->getCode(),
+                'message'  => $e->getMessage(),
+            ]);
 
-            return redirect($url);
+            return redirect(config('zoho.on_error_url', '/'));
         }
 
         $accessTokenRepository->store($accessToken);

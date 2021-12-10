@@ -106,7 +106,7 @@ class ZohoAuthProvider extends AbstractProvider
                 sprintf('There was an error on response: %s', $data['error']),
                 match ($data['error']) {
                     'invalid_client_secret' => 403,
-                    default => 400
+                    default => 500
                 },
                 $data['error']
             );
