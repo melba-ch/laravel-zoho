@@ -2,6 +2,7 @@
 
 namespace MelbaCh\LaravelZoho\Tests\Clients;
 
+use Illuminate\Http\Client\Pool;
 use Illuminate\Http\Client\Request;
 use Http;
 use Illuminate\Http\Client\Response;
@@ -85,12 +86,31 @@ class ZohoHttpTest extends TestCase
     {
         $this->zohoClientHttp->fake();
 
-        $this->zohoClientHttp->get('/');
+        $response = $this->zohoClientHttp->get('/');
 
         /** @var Request $request */
         $request = $this->zohoClientHttp->recorded()[0][0];
         $this->assertTrue($request->hasHeader('Authorization'));
         $this->assertEquals('Zoho-oauthtoken mock_access_token', $request->headers()['Authorization'][0]);
+        $this->assertInstanceOf(ZohoResponse::class, $response);
+    }
+
+    /** @test */
+    public function it_returns_an_array_of_zoho_responses_class_when_using_pool(): void
+    {
+        $this->zohoClientHttp->fake();
+
+        $responses = $this->zohoClientHttp->pool(fn(Pool $pool) => [
+            $pool->get('/1'),
+            $pool->get('/2'),
+        ]);
+
+        /** @var Request $request */
+        $request = $this->zohoClientHttp->recorded()[0][0];
+        $this->assertTrue($request->hasHeader('Authorization'));
+        $this->assertEquals('Zoho-oauthtoken mock_access_token', $request->headers()['Authorization'][0]);
+
+        $this->assertInstanceOf(ZohoResponse::class, $responses[0]);
     }
 
     /** @test */

@@ -34,6 +34,12 @@ class ZohoHttp extends Factory
                 ->stub($this->stubCallbacks);
         })->{$method}(...$parameters);
 
+        return $this->transformResponse($response);
+    }
+
+    private function transformResponse(
+        Response|PendingRequest|array $response
+    ): ZohoResponse|ZohoPendingRequest|array {
         if ($response instanceof Response) {
             return ZohoResponse::fromResponse($response);
         }
@@ -41,7 +47,9 @@ class ZohoHttp extends Factory
             return ZohoPendingRequest::fromPendingRequest($response);
         }
 
-        return $response;
+        if (is_array($response)) {
+            return array_map(fn($res) => $this->transformResponse($res), $response);
+        }
     }
 
     public function fake($callback = null)
