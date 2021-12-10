@@ -31,7 +31,11 @@ class ZohoAuthController extends Controller
         }
 
         $this->verifyState();
-        $this->getAccessToken($accessTokenRepository);
+
+        $token = $this->getAccessToken($accessTokenRepository);
+        if($token instanceof RedirectResponse){
+            return $token;
+        }
 
         return redirect(config('zoho.redirect_url', '/'));
     }
@@ -61,18 +65,25 @@ class ZohoAuthController extends Controller
      *
      * @param AccessTokenRepository $accessTokenRepository
      *
-     * @return AccessTokenInterface
+     * @return \Illuminate\Contracts\Foundation\Application|RedirectResponse|Redirector|AccessTokenInterface
      *
      * @throws IdentityProviderException
      */
     private function getAccessToken(
         AccessTokenRepository $accessTokenRepository
-    ): AccessTokenInterface {
+    ) {
         $provider = $this->getProvider();
-        $accessToken = $provider->getAccessToken('authorization_code', [
-            'code'         => request()->get('code'),
-            'redirect_uri' => url()->current(),
-        ]);
+        try {
+            $accessToken = $provider->getAccessToken('authorization_code', [
+                'code'         => request()->get('code'),
+                'redirect_uri' => url()->current(),
+            ]);
+        } catch (IdentityProviderException $e) {
+            $url = config('zoho.on_error_url', '/')
+                . '?' . http_build_query(['error' => $e->getCode()]);
+
+            return redirect($url);
+        }
 
         $accessTokenRepository->store($accessToken);
 

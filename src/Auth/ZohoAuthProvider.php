@@ -94,23 +94,24 @@ class ZohoAuthProvider extends AbstractProvider
     protected function checkResponse(ResponseInterface $response, $data): void
     {
         if ($response->getStatusCode() >= 400) {
-            /*
-             * todo: see if zoho throw another type of error messages
-             * $data = [
-             *     "code" => "INVALID_URL_PATTERN"
-             *     "details" => []
-             *     "message" => "Please check if the URL trying to access is a correct one"
-             *     "status" => "error"
-             * ]
-             *
-             */
-            //\Log::error(json_encode($data));
             throw new IdentityProviderException(
                 sprintf('There was an error on response: %s', $data['code']),
                 $response->getStatusCode(),
                 $data['message']
             );
         }
+
+        if (array_key_exists('error', $data)) {
+            throw new IdentityProviderException(
+                sprintf('There was an error on response: %s', $data['error']),
+                match ($data['error']) {
+                    'invalid_client_secret' => 403,
+                    default => 400
+                },
+                $data['error']
+            );
+        }
+
     }
 
     /**
