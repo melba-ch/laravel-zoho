@@ -33,7 +33,7 @@ class DatabaseConfigRepository implements ConfigRepository
 
     public function region(): string
     {
-        return $this->get()['parameters']['region'];
+        return $this->get()['parameters']['region'] ?? config('zoho.region', 'US');
     }
 
     public function scopes(): array
@@ -51,9 +51,9 @@ class DatabaseConfigRepository implements ConfigRepository
         return $this->get()['secrets']['client_id'];
     }
 
-    public function currentOrganizationId(): ?string
+    public function currentOrganizationId(): string|null
     {
-        return $this->get()['parameters']['current_organization_id'];
+        return $this->get()['parameters']['current_organization_id'] ?? null;
     }
 
     public function store(array $config): ConfigRepository
@@ -84,10 +84,7 @@ class DatabaseConfigRepository implements ConfigRepository
             ]);
     }
 
-    /**
-     * @return int|string
-     */
-    protected function ownerId()
+    protected function ownerId(): int|string
     {
         return Auth::guard(config('zoho.auth_guard'))->id();
     }
