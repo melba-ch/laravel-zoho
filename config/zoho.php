@@ -12,6 +12,7 @@ return [
     // with the error flashed in the session with the key `zoho.access_token_error`
     // known error code:
     //      -  403: invalid_client_secret
+    //      -  403: invalid_code
     //      -  500: fallback on unknown error
     'on_error_url' => '/',
 
