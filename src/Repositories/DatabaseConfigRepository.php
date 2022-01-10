@@ -38,17 +38,17 @@ class DatabaseConfigRepository implements ConfigRepository
 
     public function scopes(): array
     {
-        return $this->get()['parameters']['scopes'];
+        return $this->get()['parameters']['scopes'] ?? [];
     }
 
     public function secret(): string
     {
-        return $this->get()['secrets']['secret'];
+        return $this->get()['secrets']['secret'] ?? '';
     }
 
     public function clientId(): string
     {
-        return $this->get()['secrets']['client_id'];
+        return $this->get()['secrets']['client_id'] ?? '';
     }
 
     public function currentOrganizationId(): string|null
@@ -84,15 +84,15 @@ class DatabaseConfigRepository implements ConfigRepository
             ]);
     }
 
-    protected function ownerId(): int|string
+    protected function ownerId(): int|string|null
     {
-        return Auth::guard(config('zoho.auth_guard'))->id();
+        return Auth::guard(config('zoho.auth_guard'))?->id();
     }
 
-    protected function ownerType(): string
+    protected function ownerType(): string|null
     {
         /** @var Model $user */
         $user = Auth::guard(config('zoho.auth_guard'))->user();
-        return $user->getMorphClass();
+        return $user?->getMorphClass();
     }
 }
