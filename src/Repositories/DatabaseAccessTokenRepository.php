@@ -26,7 +26,7 @@ class DatabaseAccessTokenRepository implements AccessTokenRepository
         return $this;
     }
 
-    public function get(): ?AccessTokenInterface
+    public function get(): AccessTokenInterface|null
     {
         if ($this->accessToken) {
             return $this->accessToken;
@@ -61,18 +61,15 @@ class DatabaseAccessTokenRepository implements AccessTokenRepository
         return $this->get() !== null;
     }
 
-    /**
-     * @return int|string
-     */
-    protected function ownerId()
+    protected function ownerId(): string|int|null
     {
-        return Auth::guard(config('zoho.auth_guard'))->id();
+        return Auth::guard(config('zoho.auth_guard'))?->id();
     }
 
-    protected function ownerType(): string
+    protected function ownerType(): string|null
     {
         /** @var Model $user */
         $user = Auth::guard(config('zoho.auth_guard'))->user();
-        return $user->getMorphClass();
+        return $user?->getMorphClass();
     }
 }
