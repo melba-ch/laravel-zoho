@@ -25,6 +25,10 @@ class DefaultAccessTokenRepository implements AccessTokenRepository
             $hash = Storage::disk(config('zoho.access_token_disk', null))
                 ->get(config('zoho.access_token_path'));
 
+            if ($hash === null) {
+                return null;
+            }
+
             return Crypt::decrypt($hash);
 
         } catch (FileNotFoundException $exception) {
