@@ -31,13 +31,18 @@
   },
   "require": {
     "php": "^8.0",
-    "ext-json": "*",
+    "illuminate/contracts": "^8.37|^9.0",
+    "illuminate/support": "^8.49|^9.0",
     "league/oauth2-client": "^2.6"
   },
   "require-dev": {
-    "orchestra/testbench": "^6.22"
+    "brianium/paratest": "^6.2",
+    "orchestra/testbench": "^6.22|^7.0",
+    "phpunit/phpunit": "^9.3",
+    "nunomaduro/collision": "^6.1"
   },
   "scripts": {
-    "test": "vendor/bin/phpunit"
+    "test": "./vendor/bin/testbench package:test --parallel --no-coverage",
+    "test-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html coverage"
   }
 }
