@@ -9,6 +9,7 @@ use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use MelbaCh\LaravelZoho\Auth\ZohoAuthProvider;
 use MelbaCh\LaravelZoho\Repositories\AccessTokenRepository;
+use MelbaCh\LaravelZoho\Repositories\ConfigRepository;
 
 class ZohoAuthController extends Controller
 {
@@ -24,15 +25,20 @@ class ZohoAuthController extends Controller
      *
      * @throws IdentityProviderException
      */
-    public function requestToken(AccessTokenRepository $accessTokenRepository)
-    {
-        if (! request()->get('code')) {
+    public function requestToken(
+        AccessTokenRepository $accessTokenRepository,
+        ConfigRepository      $configRepository,
+    ) {
+        if (!request()->get('code')) {
             return $this->redirectToZoho();
         }
 
         $this->verifyState();
 
         $token = $this->getAccessToken($accessTokenRepository);
+
+        $configRepository->setScopes(config('zoho.scopes', []));
+
         if ($token instanceof RedirectResponse) {
             return $token;
         }
@@ -80,8 +86,8 @@ class ZohoAuthController extends Controller
             ]);
         } catch (IdentityProviderException $e) {
             request()->session()->flash('zoho.access_token_error', [
-                'code'     => $e->getCode(),
-                'message'  => $e->getMessage(),
+                'code'    => $e->getCode(),
+                'message' => $e->getMessage(),
             ]);
 
             return redirect(config('zoho.on_error_url', '/'));

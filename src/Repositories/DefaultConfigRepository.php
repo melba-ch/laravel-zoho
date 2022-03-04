@@ -36,6 +36,12 @@ class DefaultConfigRepository implements ConfigRepository
         return $this->config['parameters']['scopes'];
     }
 
+    public function setScopes(array $scopes): ConfigRepository
+    {
+        // Not supported
+        return $this;
+    }
+
     public function secret(): string
     {
         return $this->config['secrets']['secret'];

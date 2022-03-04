@@ -26,6 +26,7 @@ class ZohoAuthControllerTest extends TestCase
             $repository->shouldReceive('secret')->andReturn('123-789');
             $repository->shouldReceive('region')->andReturn('EU');
             $repository->shouldReceive('scopes')->andReturn(['my-scope', 'my-another-scope']);
+            $repository->shouldReceive('setScopes')->andReturnSelf();
         });
     }
 
@@ -41,7 +42,7 @@ class ZohoAuthControllerTest extends TestCase
             'access_type'     => 'offline',
             'prompt'          => 'consent',
             'state'           => session('oauth2state'),
-            'scope'           => 'my-scope,my-another-scope',
+            'scope'           => implode(',', config('zoho.scopes')),
             'response_type'   => 'code',
             'approval_prompt' => 'auto',
             'client_id'       => 'abc-xyz',

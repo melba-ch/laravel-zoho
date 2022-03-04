@@ -9,7 +9,6 @@ use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use MelbaCh\LaravelZoho\Clients\ZohoUrlFactory;
-use MelbaCh\LaravelZoho\Repositories\ConfigRepository;
 use Psr\Http\Message\ResponseInterface;
 
 class ZohoAuthProvider extends AbstractProvider
@@ -62,7 +61,7 @@ class ZohoAuthProvider extends AbstractProvider
      */
     protected function getDefaultScopes(): array
     {
-        return app(ConfigRepository::class)->scopes();
+        return config('zoho.scopes', []);
     }
 
     /**

@@ -41,6 +41,14 @@ class DatabaseConfigRepository implements ConfigRepository
         return $this->get()['parameters']['scopes'] ?? [];
     }
 
+    public function setScopes(array $scopes): self
+    {
+        $config = $this->get();
+        $config['parameters']['scopes'] = $scopes;
+        $this->store($config);
+        return $this;
+    }
+
     public function secret(): string
     {
         return $this->get()['secrets']['secret'] ?? '';
