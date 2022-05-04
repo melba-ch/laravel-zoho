@@ -38,8 +38,7 @@ class StorageConfigRepository implements ConfigRepository
 
     public function setScopes(array $scopes): ConfigRepository
     {
-        // Not supported
-        return $this;
+        throw new \Exception('`setScopes` is not available when using DefaultConfigRepository');
     }
 
     public function secret(): string|null
