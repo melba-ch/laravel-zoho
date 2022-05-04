@@ -10,8 +10,8 @@ use MelbaCh\LaravelZoho\Auth\ZohoAuthProvider;
 use MelbaCh\LaravelZoho\Controllers\ZohoAuthController;
 use MelbaCh\LaravelZoho\Repositories\AccessTokenRepository;
 use MelbaCh\LaravelZoho\Repositories\ConfigRepository;
-use MelbaCh\LaravelZoho\Repositories\DefaultAccessTokenRepository;
-use MelbaCh\LaravelZoho\Repositories\DefaultConfigRepository;
+use MelbaCh\LaravelZoho\Repositories\StorageAccessTokenRepository;
+use MelbaCh\LaravelZoho\Repositories\StorageConfigRepository;
 
 class LaravelZohoServiceProvider extends ServiceProvider
 {
@@ -64,12 +64,12 @@ class LaravelZohoServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             ConfigRepository::class,
-            config('zoho.config_repository', DefaultConfigRepository::class)
+            config('zoho.config_repository', StorageConfigRepository::class)
         );
 
         $this->app->bind(
             AccessTokenRepository::class,
-            config('zoho.access_token_repository', DefaultAccessTokenRepository::class)
+            config('zoho.access_token_repository', StorageAccessTokenRepository::class)
         );
 
         $this->app->bind(ZohoAuthProvider::class, function () {

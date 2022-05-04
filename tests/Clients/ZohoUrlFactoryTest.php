@@ -3,7 +3,7 @@
 namespace MelbaCh\LaravelZoho\Tests\Clients;
 
 use MelbaCh\LaravelZoho\Clients\ZohoUrlFactory;
-use MelbaCh\LaravelZoho\Repositories\DefaultConfigRepository;
+use MelbaCh\LaravelZoho\Repositories\StorageConfigRepository;
 use MelbaCh\LaravelZoho\Tests\TestCase;
 use MelbaCh\LaravelZoho\ZohoModules;
 use Mockery\MockInterface;
@@ -15,7 +15,7 @@ class ZohoUrlFactoryTest extends TestCase
     {
         parent::setUp();
 
-        $this->mock(DefaultConfigRepository::class, static function (MockInterface $repository)
+        $this->mock(StorageConfigRepository::class, static function (MockInterface $repository)
         {
             $repository->shouldReceive('region')->andReturn('EU');
             $repository->shouldReceive('currentOrganizationId')->andReturn(1234);
@@ -105,7 +105,7 @@ class ZohoUrlFactoryTest extends TestCase
     /** @test */
     public function it_uses_the_region(): void
     {
-        $this->mock(DefaultConfigRepository::class, static function (MockInterface $repository)
+        $this->mock(StorageConfigRepository::class, static function (MockInterface $repository)
         {
             $repository->shouldReceive('region')->andReturn('EU');
         });
@@ -114,7 +114,7 @@ class ZohoUrlFactoryTest extends TestCase
             invade(app(ZohoUrlFactory::class))->baseApiUrl(ZohoModules::BOOKS)
         );
 
-        $this->mock(DefaultConfigRepository::class, static function (MockInterface $repository)
+        $this->mock(StorageConfigRepository::class, static function (MockInterface $repository)
         {
             $repository->shouldReceive('region')->andReturn('US');
         });

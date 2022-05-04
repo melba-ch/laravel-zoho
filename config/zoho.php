@@ -24,7 +24,7 @@ return [
         \MelbaCh\LaravelZoho\Middleware\VerifyZohoCredentialsDoesntExists::class,
     ],
 
-    'config_repository'       => \MelbaCh\LaravelZoho\Repositories\DefaultConfigRepository::class,
+    'config_repository'       => \MelbaCh\LaravelZoho\Repositories\StorageConfigRepository::class,
     /**
      * Specific to the Default config Repository
      */
@@ -36,7 +36,7 @@ return [
         'ZohoBooks.settings.READ',
     ],
 
-    'access_token_repository' => \MelbaCh\LaravelZoho\Repositories\DefaultAccessTokenRepository::class,
+    'access_token_repository' => \MelbaCh\LaravelZoho\Repositories\StorageAccessTokenRepository::class,
     /**
      * Specific to the Default Access Token Repository
      */

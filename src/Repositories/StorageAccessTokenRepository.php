@@ -7,7 +7,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-class DefaultAccessTokenRepository implements AccessTokenRepository
+class StorageAccessTokenRepository implements AccessTokenRepository
 {
 
     public function store(AccessTokenInterface $accessToken): AccessTokenRepository

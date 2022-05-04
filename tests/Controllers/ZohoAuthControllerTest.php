@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use MelbaCh\LaravelZoho\Auth\ZohoAccessToken;
 use MelbaCh\LaravelZoho\Auth\ZohoAuthProvider;
 use MelbaCh\LaravelZoho\Repositories\AccessTokenRepository;
-use MelbaCh\LaravelZoho\Repositories\DefaultConfigRepository;
+use MelbaCh\LaravelZoho\Repositories\StorageConfigRepository;
 use MelbaCh\LaravelZoho\Tests\TestCase;
 use Mockery\MockInterface;
 
@@ -20,7 +20,7 @@ class ZohoAuthControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->mock(DefaultConfigRepository::class, static function (MockInterface $repository)
+        $this->mock(StorageConfigRepository::class, static function (MockInterface $repository)
         {
             $repository->shouldReceive('clientId')->andReturn('abc-xyz');
             $repository->shouldReceive('secret')->andReturn('123-789');

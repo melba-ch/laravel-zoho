@@ -2,7 +2,7 @@
 
 namespace MelbaCh\LaravelZoho\Repositories;
 
-class DefaultConfigRepository implements ConfigRepository
+class StorageConfigRepository implements ConfigRepository
 {
     protected array $config = [];
 
@@ -42,17 +42,17 @@ class DefaultConfigRepository implements ConfigRepository
         return $this;
     }
 
-    public function secret(): string
+    public function secret(): string|null
     {
         return $this->config['secrets']['secret'];
     }
 
-    public function clientId(): string
+    public function clientId(): string|null
     {
         return $this->config['secrets']['client_id'];
     }
 
-    public function currentOrganizationId(): ?string
+    public function currentOrganizationId(): string|null
     {
         return $this->config['parameters']['current_organization_id'];
     }

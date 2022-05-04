@@ -16,9 +16,9 @@ interface ConfigRepository
 
     public function setScopes(array $scopes): self;
 
-    public function secret(): string;
+    public function secret(): string|null;
 
-    public function clientId(): string;
+    public function clientId(): string|null;
 
-    public function currentOrganizationId(): ?string;
+    public function currentOrganizationId(): string|null;
 }
