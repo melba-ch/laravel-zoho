@@ -29,17 +29,17 @@ class ZohoUrlFactoryTest extends TestCase
 
         $this->assertEquals(
             'https://www.zohoapis.eu/crm/v2/users/4',
-            $urlFactory->make(ZohoModules::Crm, '/users/4')
+            $urlFactory->api(ZohoModules::CRM, '/users/4')
         );
 
         $this->assertEquals(
             'https://books.zoho.eu/api/v3/invoices?organization_id=1234',
-            $urlFactory->make(ZohoModules::Books, '/invoices')
+            $urlFactory->api(ZohoModules::BOOKS, '/invoices')
         );
 
         $this->assertEquals(
             'https://recruit.zoho.eu/recruit/v2/users',
-            $urlFactory->make(ZohoModules::Recruit, '/users')
+            $urlFactory->api(ZohoModules::RECRUIT, '/users')
         );
     }
 
@@ -50,17 +50,17 @@ class ZohoUrlFactoryTest extends TestCase
 
         $this->assertEquals(
             'https://www.zohoapis.eu/crm/v2',
-            $urlFactory->baseApiUrl(ZohoModules::Crm)
+            invade($urlFactory)->baseApiUrl(ZohoModules::CRM)
         );
 
         $this->assertEquals(
             'https://books.zoho.eu/api/v3',
-            $urlFactory->baseApiUrl(ZohoModules::Books)
+            invade($urlFactory)->baseApiUrl(ZohoModules::BOOKS)
         );
 
         $this->assertEquals(
             'https://recruit.zoho.eu/recruit/v2',
-            $urlFactory->baseApiUrl(ZohoModules::Recruit)
+            invade($urlFactory)->baseApiUrl(ZohoModules::RECRUIT)
         );
     }
 
@@ -92,12 +92,12 @@ class ZohoUrlFactoryTest extends TestCase
 
         $this->assertEquals(
             'https://books.zoho.eu/api/v3/invoices?organization_id=1234',
-            $urlFactory->make(ZohoModules::Books, '/invoices')
+            $urlFactory->api(ZohoModules::BOOKS, '/invoices')
         );
 
         $this->assertEquals(
             'https://books.zoho.eu/api/v3/invoices?param_1=param&organization_id=1234',
-            $urlFactory->make(ZohoModules::Books, '/invoices?param_1=param')
+            $urlFactory->api(ZohoModules::BOOKS, '/invoices?param_1=param')
         );
         
     }
@@ -111,7 +111,7 @@ class ZohoUrlFactoryTest extends TestCase
         });
         $this->assertEquals(
             'https://books.zoho.eu/api/v3',
-            app(ZohoUrlFactory::class)->baseApiUrl(ZohoModules::Books)
+            invade(app(ZohoUrlFactory::class))->baseApiUrl(ZohoModules::BOOKS)
         );
 
         $this->mock(DefaultConfigRepository::class, static function (MockInterface $repository)
@@ -120,7 +120,7 @@ class ZohoUrlFactoryTest extends TestCase
         });
         $this->assertEquals(
             'https://books.zoho.com/api/v3',
-            app(ZohoUrlFactory::class)->baseApiUrl(ZohoModules::Books)
+            invade(app(ZohoUrlFactory::class))->baseApiUrl(ZohoModules::BOOKS)
         );
     }
 
@@ -131,17 +131,17 @@ class ZohoUrlFactoryTest extends TestCase
 
         $this->assertEquals(
             'https://www.zohoapis.eu/crm/v2/users/4',
-            $urlFactory->api(ZohoModules::Crm, '/users/4')
+            $urlFactory->api(ZohoModules::CRM, '/users/4')
         );
 
         $this->assertEquals(
             'https://books.zoho.eu/api/v3/invoices?organization_id=1234',
-            $urlFactory->api(ZohoModules::Books, '/invoices')
+            $urlFactory->api(ZohoModules::BOOKS, '/invoices')
         );
 
         $this->assertEquals(
             'https://recruit.zoho.eu/recruit/v2/users',
-            $urlFactory->api(ZohoModules::Recruit, '/users')
+            $urlFactory->api(ZohoModules::RECRUIT, '/users')
         );
     }
 
@@ -153,17 +153,17 @@ class ZohoUrlFactoryTest extends TestCase
 
         $this->assertEquals(
             'https://crm.zoho.eu/crm/1234/tab/Potentials/292528000000000000',
-            $urlFactory->web(ZohoModules::Crm, '/tab/Potentials/292528000000000000')
+            $urlFactory->web(ZohoModules::CRM, '/tab/Potentials/292528000000000000')
         );
 
         $this->assertEquals(
             'https://books.zoho.eu/app#/contacts/139996000000000000',
-            $urlFactory->web(ZohoModules::Books, '/contacts/139996000000000000')
+            $urlFactory->web(ZohoModules::BOOKS, '/contacts/139996000000000000')
         );
 
         $this->assertEquals(
             'https://recruit.zoho.eu/recruit/1234/EntityInfo.do?module=Candidates&id=31529000000000000&submodule=Candidates',
-            $urlFactory->web(ZohoModules::Recruit, '/EntityInfo.do?module=Candidates&id=31529000000000000&submodule=Candidates')
+            $urlFactory->web(ZohoModules::RECRUIT, '/EntityInfo.do?module=Candidates&id=31529000000000000&submodule=Candidates')
         );
     }
 }

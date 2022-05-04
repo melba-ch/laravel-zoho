@@ -19,7 +19,7 @@ class DefaultAccessTokenRepository implements AccessTokenRepository
         return $this;
     }
 
-    public function get(): ?AccessTokenInterface
+    public function get(): AccessTokenInterface|null
     {
         try {
             $hash = Storage::disk(config('zoho.access_token_disk', null))

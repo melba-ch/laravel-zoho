@@ -8,7 +8,7 @@ interface AccessTokenRepository
 {
     public function store(AccessTokenInterface $accessToken): self;
 
-    public function get(): ?AccessTokenInterface;
+    public function get(): AccessTokenInterface|null;
 
     public function delete(): void;
 
