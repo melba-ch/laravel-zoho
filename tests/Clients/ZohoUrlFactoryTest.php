@@ -166,4 +166,50 @@ class ZohoUrlFactoryTest extends TestCase
             $urlFactory->web(ZohoModules::RECRUIT, '/EntityInfo.do?module=Candidates&id=31529000000000000&submodule=Candidates')
         );
     }
+
+    /** @test */
+    public function it_adds_parameter_to_api_url()
+    {
+        $urlFactory = app(ZohoUrlFactory::class);
+
+        $this->assertEquals(
+            'https://www.zohoapis.eu/crm/v2/users/4?foo=1&bar=2&baz=3',
+            $urlFactory->api(ZohoModules::CRM, '/users/4', [
+                'foo' => 1,
+                'bar' => 2,
+                'baz' => 3,
+            ])
+        );
+
+        $this->assertEquals(
+            'https://www.zohoapis.eu/crm/v2/users/4?foo=1&bar=2&baz=3',
+            $urlFactory->api(ZohoModules::CRM, '/users/4?foo=1', [
+                'bar' => 2,
+                'baz' => 3,
+            ])
+        );
+    }
+
+    /** @test */
+    public function it_adds_parameter_to_web_url()
+    {
+        $urlFactory = app(ZohoUrlFactory::class);
+
+        $this->assertEquals(
+            'https://crm.zoho.eu/crm/1234/users/4?foo=1&bar=2&baz=3',
+            $urlFactory->web(ZohoModules::CRM, '/users/4', [
+                'foo' => 1,
+                'bar' => 2,
+                'baz' => 3,
+            ])
+        );
+
+        $this->assertEquals(
+            'https://crm.zoho.eu/crm/1234/users/4?foo=1&bar=2&baz=3',
+            $urlFactory->web(ZohoModules::CRM, '/users/4?foo=1', [
+                'bar' => 2,
+                'baz' => 3,
+            ])
+        );
+    }
 }

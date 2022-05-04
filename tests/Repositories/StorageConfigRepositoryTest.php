@@ -48,6 +48,16 @@ class StorageConfigRepositoryTest extends TestCase
     }
 
     /** @test */
+    public function it_cannot_set_the_scopes(): void
+    {
+        $repository = app(StorageConfigRepository::class);
+
+        // Not supported
+        $this->expectException(\Exception::class);
+        $repository->setScopes(['my-new-scope', 'another-new-scope']);
+    }
+
+    /** @test */
     public function it_returns_the_scopes(): void
     {
         $repository = app(StorageConfigRepository::class);
@@ -74,5 +84,26 @@ class StorageConfigRepositoryTest extends TestCase
         $repository = app(StorageConfigRepository::class);
         $this->assertEquals(1234, $repository->currentOrganizationId());
     }
+
+    /** @test */
+    public function it_cannot_store(): void
+    {
+        $repository = app(StorageConfigRepository::class);
+
+        // Not supported
+        $this->expectException(\Exception::class);
+        $repository->store([]);
+    }
+
+    /** @test */
+    public function it_cannot_be_deleted(): void
+    {
+        $repository = app(StorageConfigRepository::class);
+
+        // Not supported
+        $this->expectException(\Exception::class);
+        $repository->delete();
+    }
+
 
 }
