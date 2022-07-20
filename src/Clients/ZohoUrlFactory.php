@@ -41,7 +41,12 @@ class ZohoUrlFactory
             $url = Str::replaceFirst('/', '', $url);
         }
 
-        $url = Str::finish($this->baseWebUrl($module), '/') . $url;
+        if (config('zoho.sandbox', false)) {
+            $url = Str::finish($this->baseWebUrlSandbox($module), '/') . $url;
+        } else {
+            $url = Str::finish($this->baseWebUrl($module), '/') . $url;
+        }
+
 
         foreach ($parameters as $parameter => $value) {
             $url = $this->addParameterToUrlQuery($url, $parameter, $value);
@@ -51,9 +56,9 @@ class ZohoUrlFactory
     }
 
     /**
-     * @internal
      * @param string $type
      * @return string
+     * @internal
      */
     public function oauthApiUrl(string $type): string
     {
@@ -119,11 +124,11 @@ class ZohoUrlFactory
                 'CN' => 'https://books.zoho.com.cn/api/v3',
             ],
             ZohoModules::CRM->value     => [
-                'EU' => 'https://www.zohoapis.eu/crm/v2',
-                'US' => 'https://www.zohoapis.com/crm/v2',
-                'IN' => 'https://www.zohoapis.in/crm/v2',
-                'AU' => 'https://www.zohoapis.com.au/crm/v2',
-                'CN' => 'https://www.zohoapis.com.cn/crm/v2',
+                'EU' => 'https://www.zohoapis.eu/crm/v3',
+                'US' => 'https://www.zohoapis.com/crm/v3',
+                'IN' => 'https://www.zohoapis.in/crm/v3',
+                'AU' => 'https://www.zohoapis.com.au/crm/v3',
+                'CN' => 'https://www.zohoapis.com.cn/crm/v3',
             ],
             ZohoModules::RECRUIT->value => [
                 'EU' => 'https://recruit.zoho.eu/recruit/v2',
@@ -131,6 +136,28 @@ class ZohoUrlFactory
                 'IN' => 'https://recruit.zoho.in/recruit/v2',
                 'AU' => 'https://recruit.zoho.com.au/recruit/v2',
                 'CN' => 'https://recruit.zoho.com.cn/recruit/v2',
+            ],
+        ][$module->value][$region];
+    }
+
+    protected function baseWebUrlSandbox(ZohoModules $module): string
+    {
+        $region = $this->config->region() ?? 'US';
+        $organization = $this->config->currentOrganizationId();
+
+        return [
+            ZohoModules::BOOKS->value   => [
+                // Not implemented yet
+            ],
+            ZohoModules::CRM->value     => [
+                'EU' => "https://crmsandbox.zoho.eu/crm/{$organization}",
+                'US' => "https://crmsandbox.zoho.com/crm/{$organization}",
+                'IN' => "https://crmsandbox.zoho.in/crm/{$organization}",
+                'AU' => "https://crmsandbox.zoho.com.eu/crm/{$organization}",
+                'CN' => "https://crmsandbox.zoho.com.cn/crm/{$organization}",
+            ],
+            ZohoModules::RECRUIT->value => [
+                // Not implemented yet
             ],
         ][$module->value][$region];
     }

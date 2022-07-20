@@ -6,9 +6,10 @@ return [
      */
     'url'          => '/oauth2/zoho',
     'redirect_url' => '/',
+    'sandbox'      => env('ZOHO_SANDBOX', false),
 
     // When requesting an accessToken, the API may return an error,
-    // The controller will redirect the user to `on_error_url`
+    // The controller will redirect the user to `on_error_redirect_to`
     // with the error flashed in the session with the key `zoho.access_token_error`
     // known error code:
     //      -  403: invalid_client_secret

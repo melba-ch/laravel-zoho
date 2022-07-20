@@ -28,7 +28,7 @@ class ZohoUrlFactoryTest extends TestCase
         $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
-            'https://www.zohoapis.eu/crm/v2/users/4',
+            'https://www.zohoapis.eu/crm/v3/users/4',
             $urlFactory->api(ZohoModules::CRM, '/users/4')
         );
 
@@ -49,7 +49,7 @@ class ZohoUrlFactoryTest extends TestCase
         $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
-            'https://www.zohoapis.eu/crm/v2',
+            'https://www.zohoapis.eu/crm/v3',
             invade($urlFactory)->baseApiUrl(ZohoModules::CRM)
         );
 
@@ -130,7 +130,7 @@ class ZohoUrlFactoryTest extends TestCase
         $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
-            'https://www.zohoapis.eu/crm/v2/users/4',
+            'https://www.zohoapis.eu/crm/v3/users/4',
             $urlFactory->api(ZohoModules::CRM, '/users/4')
         );
 
@@ -173,7 +173,7 @@ class ZohoUrlFactoryTest extends TestCase
         $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
-            'https://www.zohoapis.eu/crm/v2/users/4?foo=1&bar=2&baz=3',
+            'https://www.zohoapis.eu/crm/v3/users/4?foo=1&bar=2&baz=3',
             $urlFactory->api(ZohoModules::CRM, '/users/4', [
                 'foo' => 1,
                 'bar' => 2,
@@ -182,7 +182,7 @@ class ZohoUrlFactoryTest extends TestCase
         );
 
         $this->assertEquals(
-            'https://www.zohoapis.eu/crm/v2/users/4?foo=1&bar=2&baz=3',
+            'https://www.zohoapis.eu/crm/v3/users/4?foo=1&bar=2&baz=3',
             $urlFactory->api(ZohoModules::CRM, '/users/4?foo=1', [
                 'bar' => 2,
                 'baz' => 3,
@@ -211,5 +211,19 @@ class ZohoUrlFactoryTest extends TestCase
                 'baz' => 3,
             ])
         );
+    }
+
+    /** @test */
+    public function it_uses_the_sandbox_for_web()
+    {
+        config(['zoho.sandbox' => true]);
+
+        $urlFactory = app(ZohoUrlFactory::class);
+
+        $this->assertEquals(
+            'https://crmsandbox.zoho.eu/crm/1234/tab/Potentials/292528000000000000',
+            $urlFactory->web(ZohoModules::CRM, '/tab/Potentials/292528000000000000')
+        );
+
     }
 }
