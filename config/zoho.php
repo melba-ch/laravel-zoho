@@ -14,7 +14,7 @@ return [
     //      -  403: invalid_client_secret
     //      -  403: invalid_code
     //      -  500: fallback on unknown error
-    'on_error_url' => '/',
+    'on_error_redirect_to' => '/',
 
     /**
      * Middleware to generate a Token
