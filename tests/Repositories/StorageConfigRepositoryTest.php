@@ -52,9 +52,11 @@ class StorageConfigRepositoryTest extends TestCase
     {
         $repository = app(StorageConfigRepository::class);
 
-        // Not supported
-        $this->expectException(\Exception::class);
+        $scopes = $repository->scopes();
+
         $repository->setScopes(['my-new-scope', 'another-new-scope']);
+
+        $this->assertEquals($scopes, $repository->scopes());
     }
 
     /** @test */
