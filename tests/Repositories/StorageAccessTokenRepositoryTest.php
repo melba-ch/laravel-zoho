@@ -5,17 +5,17 @@ namespace MelbaCh\LaravelZoho\Tests\Repositories;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use MelbaCh\LaravelZoho\Auth\ZohoAccessToken;
-use MelbaCh\LaravelZoho\Repositories\DefaultAccessTokenRepository;
+use MelbaCh\LaravelZoho\Repositories\StorageAccessTokenRepository;
 use MelbaCh\LaravelZoho\Tests\TestCase;
 
-class DefaultAccessTokenRepositoryTest extends TestCase
+class StorageAccessTokenRepositoryTest extends TestCase
 {
 
     /** @test */
     public function it_store_the_token(): void
     {
         Storage::fake(config('zoho.access_token_disk'));
-        $repository = app(DefaultAccessTokenRepository::class);
+        $repository = app(StorageAccessTokenRepository::class);
 
         $token = uniqid('', true);
         $accessToken = new ZohoAccessToken(['access_token' => $token]);
@@ -34,7 +34,7 @@ class DefaultAccessTokenRepositoryTest extends TestCase
     public function it_get_the_token(): void
     {
         Storage::fake(config('zoho.access_token_disk'));
-        $repository = app(DefaultAccessTokenRepository::class);
+        $repository = app(StorageAccessTokenRepository::class);
 
         $token = uniqid('', true);
         $accessToken = new ZohoAccessToken(['access_token' => $token]);
@@ -53,7 +53,7 @@ class DefaultAccessTokenRepositoryTest extends TestCase
     public function it_can_delete_the_token(): void
     {
         Storage::fake(config('zoho.access_token_disk'));
-        $repository = app(DefaultAccessTokenRepository::class);
+        $repository = app(StorageAccessTokenRepository::class);
 
         $token = uniqid('', true);
         $accessToken = new ZohoAccessToken(['access_token' => $token]);
@@ -77,7 +77,7 @@ class DefaultAccessTokenRepositoryTest extends TestCase
     public function it_can_verify_the_token_exists(): void
     {
         Storage::fake(config('zoho.access_token_disk'));
-        $repository = app(DefaultAccessTokenRepository::class);
+        $repository = app(StorageAccessTokenRepository::class);
 
         $token = uniqid('', true);
         $accessToken = new ZohoAccessToken(['access_token' => $token]);

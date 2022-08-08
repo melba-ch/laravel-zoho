@@ -3,11 +3,10 @@
 namespace MelbaCh\LaravelZoho\Repositories;
 
 use Crypt;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
-class DefaultAccessTokenRepository implements AccessTokenRepository
+class StorageAccessTokenRepository implements AccessTokenRepository
 {
 
     public function store(AccessTokenInterface $accessToken): AccessTokenRepository
@@ -19,21 +18,16 @@ class DefaultAccessTokenRepository implements AccessTokenRepository
         return $this;
     }
 
-    public function get(): ?AccessTokenInterface
+    public function get(): AccessTokenInterface|null
     {
-        try {
-            $hash = Storage::disk(config('zoho.access_token_disk', null))
-                ->get(config('zoho.access_token_path'));
+        $hash = Storage::disk(config('zoho.access_token_disk', null))
+            ->get(config('zoho.access_token_path'));
 
-            if ($hash === null) {
-                return null;
-            }
-
-            return Crypt::decrypt($hash);
-
-        } catch (FileNotFoundException $exception) {
+        if ($hash === null) {
             return null;
         }
+
+        return Crypt::decrypt($hash);
     }
 
     public function delete(): void

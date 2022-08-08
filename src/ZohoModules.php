@@ -2,9 +2,9 @@
 
 namespace MelbaCh\LaravelZoho;
 
-class ZohoModules
+enum ZohoModules: string
 {
-    public const Crm = 'crm';
-    public const Books = 'books';
-    public const Recruit = 'recruit';
+    case CRM = 'crm';
+    case BOOKS = 'books';
+    case RECRUIT = 'recruit';
 }

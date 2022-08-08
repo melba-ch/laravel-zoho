@@ -96,6 +96,18 @@ class DatabaseConfigRepositoryTest extends TestCase
     }
 
     /** @test */
+    public function it_set_the_scopes(): void
+    {
+        $repository = app(DatabaseConfigRepository::class);
+
+        $this->storeDefaultConfig();
+
+        $repository->setScopes(['my-new-scope', 'another-new-scope']);
+
+        $this->assertEquals(['my-new-scope', 'another-new-scope'], $repository->scopes());
+    }
+
+    /** @test */
     public function it_returns_the_scopes(): void
     {
         $repository = app(DatabaseConfigRepository::class);

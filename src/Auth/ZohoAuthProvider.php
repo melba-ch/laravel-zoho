@@ -104,7 +104,7 @@ class ZohoAuthProvider extends AbstractProvider
             throw new IdentityProviderException(
                 sprintf('There was an error on response: %s', $data['error']),
                 match ($data['error']) {
-                    'invalid_client_secret', 'invalid_code' => 403,
+                    'invalid_client_secret', 'invalid_code', 'invalid_client' => 403,
                     default => 500
                 },
                 $data['error']

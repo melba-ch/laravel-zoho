@@ -49,14 +49,14 @@ class DatabaseConfigRepository implements ConfigRepository
         return $this;
     }
 
-    public function secret(): string
+    public function secret(): string|null
     {
-        return $this->get()['secrets']['secret'] ?? '';
+        return $this->get()['secrets']['secret'] ?? null;
     }
 
-    public function clientId(): string
+    public function clientId(): string|null
     {
-        return $this->get()['secrets']['client_id'] ?? '';
+        return $this->get()['secrets']['client_id'] ?? null;
     }
 
     public function currentOrganizationId(): string|null

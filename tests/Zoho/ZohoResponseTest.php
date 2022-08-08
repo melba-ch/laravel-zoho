@@ -1,18 +1,19 @@
 <?php
 
-namespace MelbaCh\LaravelZoho\Tests;
+namespace MelbaCh\LaravelZoho\Tests\Zoho;
 
-use MelbaCh\LaravelZoho\ZohoResponse;
 use GuzzleHttp\Psr7\Response as Psr7Response;
+use Illuminate\Http\Client\Response;
+use MelbaCh\LaravelZoho\Tests\TestCase;
+
 
 class ZohoResponseTest extends TestCase
 {
-
     /** @test */
     public function it_see_errors_when_status_is_an_error(): void
     {
-        $response = new ZohoResponse(new Psr7Response(400, [], null));
-        $this->assertTrue($response->hasErrors());
+        $response = new Response(new Psr7Response(400, [], null));
+        $this->assertTrue($response->hasErrorsFromZoho());
     }
 
     /** @test */
@@ -44,13 +45,13 @@ class ZohoResponseTest extends TestCase
             ],
         ];
 
-        $response = new ZohoResponse(new Psr7Response(200, [], json_encode($body)));
+        $response = new Response(new Psr7Response(200, [], json_encode($body)));
 
-        $this->assertTrue($response->hasErrors());
+        $this->assertTrue($response->hasErrorsFromZoho());
     }
 
     /** @test */
-    public function it_returns_the_errors(): void
+    public function it_returns_the_errorsFromZoho(): void
     {
         $body = [
             "users" => [
@@ -78,9 +79,9 @@ class ZohoResponseTest extends TestCase
             ],
         ];
 
-        $response = new ZohoResponse(new Psr7Response(200, [], json_encode($body)));
+        $response = new Response(new Psr7Response(200, [], json_encode($body)));
 
-        $this->assertTrue($response->hasErrors());
+        $this->assertTrue($response->hasErrorsFromZoho());
         $this->assertEquals(
             [
                 [
@@ -98,8 +99,9 @@ class ZohoResponseTest extends TestCase
                     "status"  => "error",
                 ],
             ],
-            $response->errors(),
+            $response->errorsFromZoho(),
         );
     }
+
 
 }

@@ -2,10 +2,10 @@
 
 namespace MelbaCh\LaravelZoho\Tests\Repositories;
 
-use MelbaCh\LaravelZoho\Repositories\DefaultConfigRepository;
+use MelbaCh\LaravelZoho\Repositories\StorageConfigRepository;
 use MelbaCh\LaravelZoho\Tests\TestCase;
 
-class DefaultConfigRepositoryTest extends TestCase
+class StorageConfigRepositoryTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -21,7 +21,7 @@ class DefaultConfigRepositoryTest extends TestCase
     /** @test */
     public function it_returns_the_config(): void
     {
-        $repository = app(DefaultConfigRepository::class);
+        $repository = app(StorageConfigRepository::class);
 
         $this->assertEquals(
             [
@@ -43,36 +43,69 @@ class DefaultConfigRepositoryTest extends TestCase
     /** @test */
     public function it_returns_the_region(): void
     {
-        $repository = app(DefaultConfigRepository::class);
+        $repository = app(StorageConfigRepository::class);
         $this->assertEquals('EU', $repository->region());
+    }
+
+    /** @test */
+    public function it_cannot_set_the_scopes(): void
+    {
+        $repository = app(StorageConfigRepository::class);
+
+        $scopes = $repository->scopes();
+
+        $repository->setScopes(['my-new-scope', 'another-new-scope']);
+
+        $this->assertEquals($scopes, $repository->scopes());
     }
 
     /** @test */
     public function it_returns_the_scopes(): void
     {
-        $repository = app(DefaultConfigRepository::class);
+        $repository = app(StorageConfigRepository::class);
         $this->assertEquals(['my-scope', 'my-another-scope'], $repository->scopes());
     }
 
     /** @test */
     public function it_returns_the_secret(): void
     {
-        $repository = app(DefaultConfigRepository::class);
+        $repository = app(StorageConfigRepository::class);
         $this->assertEquals('123-789', $repository->secret());
     }
 
     /** @test */
     public function it_returns_the_client_id(): void
     {
-        $repository = app(DefaultConfigRepository::class);
+        $repository = app(StorageConfigRepository::class);
         $this->assertEquals('abc-xyz', $repository->clientId());
     }
 
     /** @test */
     public function it_returns_the_current_organization_id(): void
     {
-        $repository = app(DefaultConfigRepository::class);
+        $repository = app(StorageConfigRepository::class);
         $this->assertEquals(1234, $repository->currentOrganizationId());
     }
+
+    /** @test */
+    public function it_cannot_store(): void
+    {
+        $repository = app(StorageConfigRepository::class);
+
+        // Not supported
+        $this->expectException(\Exception::class);
+        $repository->store([]);
+    }
+
+    /** @test */
+    public function it_cannot_be_deleted(): void
+    {
+        $repository = app(StorageConfigRepository::class);
+
+        // Not supported
+        $this->expectException(\Exception::class);
+        $repository->delete();
+    }
+
 
 }

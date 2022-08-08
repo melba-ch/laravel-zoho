@@ -23,6 +23,32 @@ class DatabaseAccessTokenRepositoryTest extends TestCase
     }
 
     /** @test */
+    public function it_know_the_access_token_exists()
+    {
+        $token = uniqid('', true);
+        $accessToken = new ZohoAccessToken(['access_token' => $token]);
+
+        DB::table('oauth_tokens')->insert([
+            'provider'     => 'zoho',
+            'owner_id'     => 1,
+            'owner_type'   => (new User)->getMorphClass(),
+            'access_token' => Crypt::encrypt($accessToken),
+            'config'       => null,
+        ]);
+
+        $repository = app(DatabaseAccessTokenRepository::class);
+
+        $this->assertTrue($repository->exists());
+    }
+
+    /** @test */
+    public function it_know_the_access_token_does_not_exists()
+    {
+        $repository = app(DatabaseAccessTokenRepository::class);
+        $this->assertFalse($repository->exists());
+    }
+
+    /** @test */
     public function it_returns_the_access_token_for_the_authenticated_user(): void
     {
         $token = uniqid('', true);

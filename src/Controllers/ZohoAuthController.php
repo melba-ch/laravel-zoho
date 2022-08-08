@@ -90,7 +90,7 @@ class ZohoAuthController extends Controller
                 'message' => $e->getMessage(),
             ]);
 
-            return redirect(config('zoho.on_error_url', '/'));
+            return redirect(config('zoho.on_error_redirect_to', '/'));
         }
 
         $accessTokenRepository->store($accessToken);
