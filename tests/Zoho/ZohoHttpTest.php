@@ -34,20 +34,20 @@ class ZohoHttpTest extends TestCase
     }
 
     protected array $fakeResponse = [
-        "users" => [
+        'users' => [
             [
-                "country" => "US",
-                "street" => null,
-                "id" => "4150868000000225013",
-                "first_name" => "Patricia",
-                "last_name" => "Boyle",
+                'country' => 'US',
+                'street' => null,
+                'id' => '4150868000000225013',
+                'first_name' => 'Patricia',
+                'last_name' => 'Boyle',
             ],
         ],
-        "info" => [
-            "per_page" => 200,
-            "count" => 3,
-            "page" => 1,
-            "more_records" => false,
+        'info' => [
+            'per_page' => 200,
+            'count' => 3,
+            'page' => 1,
+            'more_records' => false,
         ],
     ];
 
@@ -68,7 +68,7 @@ class ZohoHttpTest extends TestCase
     public function it_can_make_a_request_zoho_url_facade(): void
     {
         Http::fake([
-            'https://www.zohoapis.com/crm/v3/users' => Http::response($this->fakeResponse),
+            'https://www.zohoapis.com/crm/v6/users' => Http::response($this->fakeResponse),
         ]);
 
         $this->assertEquals(
@@ -78,6 +78,4 @@ class ZohoHttpTest extends TestCase
                 ->json()
         );
     }
-
-
 }
