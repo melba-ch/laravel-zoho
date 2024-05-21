@@ -31,7 +31,7 @@ class ZohoUrlFactoryTest extends TestCase
         );
 
         $this->assertEquals(
-            'https://books.zoho.eu/api/v3/invoices?organization_id=1234',
+            'https://www.zohoapis.eu/books/v3/invoices?organization_id=1234',
             $urlFactory->api(ZohoModules::BOOKS, '/invoices')
         );
 
@@ -52,7 +52,7 @@ class ZohoUrlFactoryTest extends TestCase
         );
 
         $this->assertEquals(
-            'https://books.zoho.eu/api/v3',
+            'https://www.zohoapis.eu/books/v3',
             invade($urlFactory)->baseApiUrl(ZohoModules::BOOKS)
         );
 
@@ -89,12 +89,12 @@ class ZohoUrlFactoryTest extends TestCase
         $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
-            'https://books.zoho.eu/api/v3/invoices?organization_id=1234',
+            'https://www.zohoapis.eu/books/v3/invoices?organization_id=1234',
             $urlFactory->api(ZohoModules::BOOKS, '/invoices')
         );
 
         $this->assertEquals(
-            'https://books.zoho.eu/api/v3/invoices?param_1=param&organization_id=1234',
+            'https://www.zohoapis.eu/books/v3/invoices?param_1=param&organization_id=1234',
             $urlFactory->api(ZohoModules::BOOKS, '/invoices?param_1=param')
         );
 
@@ -107,7 +107,7 @@ class ZohoUrlFactoryTest extends TestCase
             $repository->shouldReceive('region')->andReturn('EU');
         });
         $this->assertEquals(
-            'https://books.zoho.eu/api/v3',
+            'https://www.zohoapis.eu/books/v3',
             invade(app(ZohoUrlFactory::class))->baseApiUrl(ZohoModules::BOOKS)
         );
 
@@ -115,7 +115,7 @@ class ZohoUrlFactoryTest extends TestCase
             $repository->shouldReceive('region')->andReturn('US');
         });
         $this->assertEquals(
-            'https://books.zoho.com/api/v3',
+            'https://www.zohoapis.com/books/v3',
             invade(app(ZohoUrlFactory::class))->baseApiUrl(ZohoModules::BOOKS)
         );
     }
@@ -131,7 +131,7 @@ class ZohoUrlFactoryTest extends TestCase
         );
 
         $this->assertEquals(
-            'https://books.zoho.eu/api/v3/invoices?organization_id=1234',
+            'https://www.zohoapis.eu/books/v3/invoices?organization_id=1234',
             $urlFactory->api(ZohoModules::BOOKS, '/invoices')
         );
 
