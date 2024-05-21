@@ -125,11 +125,11 @@ class ZohoUrlFactory
                 'CN' => 'https://www.zohoapis.com.cn/books/v3',
             ],
             ZohoModules::CRM->value => [
-                'EU' => 'https://www.zohoapis.eu/crm/v3',
-                'US' => 'https://www.zohoapis.com/crm/v3',
-                'IN' => 'https://www.zohoapis.in/crm/v3',
-                'AU' => 'https://www.zohoapis.com.au/crm/v3',
-                'CN' => 'https://www.zohoapis.com.cn/crm/v3',
+                'EU' => 'https://www.zohoapis.eu/crm/v6',
+                'US' => 'https://www.zohoapis.com/crm/v6',
+                'IN' => 'https://www.zohoapis.in/crm/v6',
+                'AU' => 'https://www.zohoapis.com.au/crm/v6',
+                'CN' => 'https://www.zohoapis.com.cn/crm/v6',
             ],
             ZohoModules::RECRUIT->value => [
                 'EU' => 'https://recruit.zoho.eu/recruit/v2',
