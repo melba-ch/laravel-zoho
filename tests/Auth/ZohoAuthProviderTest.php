@@ -9,6 +9,7 @@ use MelbaCh\LaravelZoho\Auth\ZohoAuthProvider;
 use MelbaCh\LaravelZoho\Tests\TestCase;
 use Mockery\MockInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 class ZohoAuthProviderTest extends TestCase
 {
@@ -62,13 +63,17 @@ class ZohoAuthProviderTest extends TestCase
     /** @test */
     public function it_can_get_the_access_token_on_zoho(): void
     {
-        $response = $this->mock(ResponseInterface::class, static function (MockInterface $response) {
+        $stream = $this->mock(StreamInterface::class, static function (MockInterface $stream) {
             $data = [
                 'access_token' => 'mock_access_token',
                 'token_type' => 'bearer',
             ];
 
-            $response->shouldReceive('getBody')->andReturn(json_encode($data));
+            $stream->shouldReceive('__toString')->andReturn(json_encode($data));
+        });
+
+        $response = $this->mock(ResponseInterface::class, static function (MockInterface $response) use ($stream) {
+            $response->shouldReceive('getBody')->andReturn($stream);
             $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
             $response->shouldReceive('getStatusCode')->andReturn(200);
         });
@@ -91,6 +96,7 @@ class ZohoAuthProviderTest extends TestCase
 
     /**
      * @test
+     *
      * @throws Exception
      */
     public function it_returns_the_crm_owner_data(): void
@@ -104,11 +110,15 @@ class ZohoAuthProviderTest extends TestCase
             ],
         ];
 
+        $tokenStream = $this->mock(StreamInterface::class, static function (MockInterface $stream) {
+            $stream->shouldReceive('__toString')->andReturn('access_token=mock_access_token&expires=3600&refresh_token=mock_refresh_token');
+        });
+
         $tokenResponse = $this->mock(
             ResponseInterface::class,
-            static function (MockInterface $response) {
+            static function (MockInterface $response) use ($tokenStream) {
                 $response->shouldReceive('getBody')
-                    ->andReturn('access_token=mock_access_token&expires=3600&refresh_token=mock_refresh_token');
+                    ->andReturn($tokenStream);
                 $response->shouldReceive('getHeader')
                     ->andReturn(['content-type' => 'application/x-www-form-urlencoded']);
                 $response->shouldReceive('getStatusCode')
@@ -116,10 +126,14 @@ class ZohoAuthProviderTest extends TestCase
             }
         );
 
+        $ownerStream = $this->mock(StreamInterface::class, static function (MockInterface $stream) use ($data) {
+            $stream->shouldReceive('__toString')->andReturn(json_encode($data));
+        });
+
         $ownerResponse = $this->mock(
             ResponseInterface::class,
-            static function (MockInterface $response) use ($data) {
-                $response->shouldReceive('getBody')->andReturn(json_encode($data));
+            static function (MockInterface $response) use ($ownerStream) {
+                $response->shouldReceive('getBody')->andReturn($ownerStream);
                 $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
                 $response->shouldReceive('getStatusCode')->andReturn(200);
             }
@@ -144,6 +158,7 @@ class ZohoAuthProviderTest extends TestCase
 
     /**
      * @test
+     *
      * @throws Exception
      */
     public function exception_is_thrown_when_error_object_is_received(): void
@@ -154,10 +169,14 @@ class ZohoAuthProviderTest extends TestCase
             'code' => uniqid('', true),
         ];
 
+        $stream = $this->mock(StreamInterface::class, static function (MockInterface $stream) use ($error) {
+            $stream->shouldReceive('__toString')->andReturn(json_encode($error));
+        });
+
         $response = $this->mock(
             ResponseInterface::class,
-            static function (MockInterface $response) use ($status, $error) {
-                $response->shouldReceive('getBody')->andReturn(json_encode($error));
+            static function (MockInterface $response) use ($status, $stream) {
+                $response->shouldReceive('getBody')->andReturn($stream);
                 $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
                 $response->shouldReceive('getStatusCode')->andReturn($status);
             }
