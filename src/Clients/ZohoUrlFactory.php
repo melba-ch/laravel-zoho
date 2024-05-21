@@ -118,11 +118,11 @@ class ZohoUrlFactory
 
         return [
             ZohoModules::BOOKS->value => [
-                'EU' => 'https://books.zoho.eu/api/v3',
-                'US' => 'https://books.zoho.com/api/v3',
-                'IN' => 'https://books.zoho.in/api/v3',
-                'AU' => 'https://books.zoho.com.au/api/v3',
-                'CN' => 'https://books.zoho.com.cn/api/v3',
+                'EU' => 'https://zohoapis.eu/books/v3',
+                'US' => 'https://zohoapis.com/books/v3',
+                'IN' => 'https://zohoapis.in/books/v3',
+                'AU' => 'https://zohoapis.com.au/books/v3',
+                'CN' => 'https://zohoapis.com.cn/books/v3',
             ],
             ZohoModules::CRM->value => [
                 'EU' => 'https://www.zohoapis.eu/crm/v3',
