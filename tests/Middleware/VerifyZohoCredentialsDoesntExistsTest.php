@@ -13,10 +13,10 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class VerifyZohoCredentialsDoesntExistsTest extends TestCase
 {
-
     private function createRequest($method, $uri): Request
     {
         $symfonyRequest = SymfonyRequest::create($uri, $method);
+
         return Request::createFromBase($symfonyRequest);
     }
 
@@ -33,7 +33,7 @@ class VerifyZohoCredentialsDoesntExistsTest extends TestCase
         app(VerifyZohoCredentialsDoesntExists::class)
             ->handle(
                 $this->createRequest('get', '/'),
-                fn() => new Response(),
+                fn () => new Response(),
             );
     }
 
@@ -48,7 +48,7 @@ class VerifyZohoCredentialsDoesntExistsTest extends TestCase
         $response = app(VerifyZohoCredentialsDoesntExists::class)
             ->handle(
                 $this->createRequest('get', '/'),
-                fn() => new Response(),
+                fn () => new Response(),
             );
 
         $this->assertEquals(200, $response->getStatusCode());

@@ -27,7 +27,7 @@ class RefreshZohoAuthToken
     {
         $accessToken = $this->accessTokenRepository->get();
 
-        if (!$accessToken) {
+        if (! $accessToken) {
             return $next($request);
         }
 

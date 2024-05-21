@@ -24,7 +24,7 @@ class LaravelZohoServiceProvider extends ServiceProvider
             __DIR__ . '/../config/zoho.php' => base_path('config/zoho.php'),
         ], 'laravel-zoho-config');
 
-        if (!class_exists('CreateOauthTokensTable')) {
+        if (! class_exists('CreateOauthTokensTable')) {
             $this->publishes([
                 __DIR__ . '/../database/migrations/create_oauth_tokens_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_oauth_tokens_table.php'),
             ], 'laravel-zoho-migrations');
@@ -51,9 +51,10 @@ class LaravelZohoServiceProvider extends ServiceProvider
 
         $this->app->bind(ZohoAuthProvider::class, function () {
             $config = app(ConfigRepository::class);
+
             return new ZohoAuthProvider([
                 'clientSecret' => $config->secret(),
-                'clientId'     => $config->clientId(),
+                'clientId' => $config->clientId(),
             ]);
         });
 

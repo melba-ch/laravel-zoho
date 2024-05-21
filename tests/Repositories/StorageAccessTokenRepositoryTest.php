@@ -10,7 +10,6 @@ use MelbaCh\LaravelZoho\Tests\TestCase;
 
 class StorageAccessTokenRepositoryTest extends TestCase
 {
-
     /** @test */
     public function it_store_the_token(): void
     {

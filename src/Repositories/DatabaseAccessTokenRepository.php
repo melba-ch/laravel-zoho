@@ -18,9 +18,9 @@ class DatabaseAccessTokenRepository implements AccessTokenRepository
         $this->accessToken = $accessToken;
 
         DB::table('oauth_tokens')->updateOrInsert([
-            'owner_id'   => $this->ownerId(),
+            'owner_id' => $this->ownerId(),
             'owner_type' => $this->ownerType(),
-            'provider'   => self::Provider,
+            'provider' => self::Provider,
         ], ['access_token' => Crypt::encrypt($accessToken)]);
 
         return $this;
@@ -70,6 +70,7 @@ class DatabaseAccessTokenRepository implements AccessTokenRepository
     {
         /** @var Model $user */
         $user = Auth::guard(config('zoho.auth_guard'))->user();
+
         return $user?->getMorphClass();
     }
 }

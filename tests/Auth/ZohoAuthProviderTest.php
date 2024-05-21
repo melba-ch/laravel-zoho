@@ -19,9 +19,9 @@ class ZohoAuthProviderTest extends TestCase
         parent::setUp();
 
         $this->provider = new ZohoAuthProvider([
-            'clientId'     => 'mock_client_id',
+            'clientId' => 'mock_client_id',
             'clientSecret' => 'mock_secret',
-            'redirectUri'  => 'none',
+            'redirectUri' => 'none',
         ]);
     }
 
@@ -62,11 +62,10 @@ class ZohoAuthProviderTest extends TestCase
     /** @test */
     public function it_can_get_the_access_token_on_zoho(): void
     {
-        $response = $this->mock(ResponseInterface::class, static function (MockInterface $response)
-        {
+        $response = $this->mock(ResponseInterface::class, static function (MockInterface $response) {
             $data = [
                 'access_token' => 'mock_access_token',
-                'token_type'   => 'bearer',
+                'token_type' => 'bearer',
             ];
 
             $response->shouldReceive('getBody')->andReturn(json_encode($data));
@@ -76,10 +75,10 @@ class ZohoAuthProviderTest extends TestCase
 
         $client = $this->mock(
             ClientInterface::class,
-            static function (MockInterface $client) use ($response)
-            {
+            static function (MockInterface $client) use ($response) {
                 $client->shouldReceive('send')->times(1)->andReturn($response);
-            });
+            }
+        );
 
         $this->provider->setHttpClient($client);
 
@@ -99,7 +98,7 @@ class ZohoAuthProviderTest extends TestCase
         $data = [
             'org' => [
                 [
-                    'id'           => $orgId = random_int(1000, 9999),
+                    'id' => $orgId = random_int(1000, 9999),
                     'company_name' => $orgName = uniqid('', true),
                 ],
             ],
@@ -107,33 +106,33 @@ class ZohoAuthProviderTest extends TestCase
 
         $tokenResponse = $this->mock(
             ResponseInterface::class,
-            static function (MockInterface $response)
-            {
+            static function (MockInterface $response) {
                 $response->shouldReceive('getBody')
                     ->andReturn('access_token=mock_access_token&expires=3600&refresh_token=mock_refresh_token');
                 $response->shouldReceive('getHeader')
                     ->andReturn(['content-type' => 'application/x-www-form-urlencoded']);
                 $response->shouldReceive('getStatusCode')
                     ->andReturn(200);
-            });
+            }
+        );
 
         $ownerResponse = $this->mock(
             ResponseInterface::class,
-            static function (MockInterface $response) use ($data)
-            {
+            static function (MockInterface $response) use ($data) {
                 $response->shouldReceive('getBody')->andReturn(json_encode($data));
                 $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
                 $response->shouldReceive('getStatusCode')->andReturn(200);
-            });
+            }
+        );
 
         $client = $this->mock(
             ClientInterface::class,
-            static function (MockInterface $client) use ($tokenResponse, $ownerResponse)
-            {
+            static function (MockInterface $client) use ($tokenResponse, $ownerResponse) {
                 $client->shouldReceive('send')
                     ->times(2)
                     ->andReturn($tokenResponse, $ownerResponse);
-            });
+            }
+        );
 
         $this->provider->setHttpClient($client);
         $token = $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
@@ -152,19 +151,19 @@ class ZohoAuthProviderTest extends TestCase
         $status = random_int(400, 600);
         $error = [
             'message' => uniqid('', true),
-            'code'    => uniqid('', true),
+            'code' => uniqid('', true),
         ];
 
-        $response = $this->mock(ResponseInterface::class,
-            static function (MockInterface $response) use ($status, $error)
-            {
+        $response = $this->mock(
+            ResponseInterface::class,
+            static function (MockInterface $response) use ($status, $error) {
                 $response->shouldReceive('getBody')->andReturn(json_encode($error));
                 $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
                 $response->shouldReceive('getStatusCode')->andReturn($status);
-            });
+            }
+        );
 
-        $client = $this->mock(ClientInterface::class, static function (MockInterface $client) use ($response)
-        {
+        $client = $this->mock(ClientInterface::class, static function (MockInterface $client) use ($response) {
             $client->shouldReceive('send')
                 ->times(1)
                 ->andReturn($response);

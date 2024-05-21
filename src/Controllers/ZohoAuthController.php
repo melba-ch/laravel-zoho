@@ -29,7 +29,7 @@ class ZohoAuthController extends Controller
         AccessTokenRepository $accessTokenRepository,
         ConfigRepository      $configRepository,
     ) {
-        if (!request()->get('code')) {
+        if (! request()->get('code')) {
             return $this->redirectToZoho();
         }
 
@@ -56,8 +56,8 @@ class ZohoAuthController extends Controller
         $redirectTo = $provider->getAuthorizationUrl(
             [
                 'redirect_uri' => url()->current(),
-                'access_type'  => 'offline',
-                'prompt'       => 'consent',
+                'access_type' => 'offline',
+                'prompt' => 'consent',
             ]
         );
 
@@ -79,14 +79,15 @@ class ZohoAuthController extends Controller
         AccessTokenRepository $accessTokenRepository
     ) {
         $provider = $this->getProvider();
+
         try {
             $accessToken = $provider->getAccessToken('authorization_code', [
-                'code'         => request()->get('code'),
+                'code' => request()->get('code'),
                 'redirect_uri' => url()->current(),
             ]);
         } catch (IdentityProviderException $e) {
             request()->session()->flash('zoho.access_token_error', [
-                'code'    => $e->getCode(),
+                'code' => $e->getCode(),
                 'message' => $e->getMessage(),
             ]);
 

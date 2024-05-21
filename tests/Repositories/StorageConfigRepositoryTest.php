@@ -25,14 +25,14 @@ class StorageConfigRepositoryTest extends TestCase
 
         $this->assertEquals(
             [
-                'secrets'    => [
+                'secrets' => [
                     'client_id' => 'abc-xyz',
-                    'secret'    => '123-789',
+                    'secret' => '123-789',
                 ],
                 'parameters' => [
-                    'region'                  => 'EU',
+                    'region' => 'EU',
                     'current_organization_id' => 1234,
-                    'scopes'                  => ['my-scope', 'my-another-scope'],
+                    'scopes' => ['my-scope', 'my-another-scope'],
                 ],
             ],
             $repository->get(),

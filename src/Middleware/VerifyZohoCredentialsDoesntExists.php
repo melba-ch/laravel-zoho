@@ -26,6 +26,7 @@ class VerifyZohoCredentialsDoesntExists
         if ($this->accessTokenRepository->exists()) {
             abort(403);
         }
+
         return $next($request);
     }
 }

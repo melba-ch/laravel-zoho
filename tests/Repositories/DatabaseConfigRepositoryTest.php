@@ -16,20 +16,20 @@ class DatabaseConfigRepositoryTest extends TestCase
 
         \Auth::shouldReceive('guard')->andReturnSelf();
         \Auth::shouldReceive('id')->andReturn(1);
-        \Auth::shouldReceive('user')->andReturn(new User);
+        \Auth::shouldReceive('user')->andReturn(new User());
     }
 
     protected function defaultConfig(): array
     {
         return [
-            'secrets'    => [
+            'secrets' => [
                 'client_id' => 'abc-xyz',
-                'secret'    => '123-789',
+                'secret' => '123-789',
             ],
             'parameters' => [
-                'region'                  => 'EU',
+                'region' => 'EU',
                 'current_organization_id' => 1234,
-                'scopes'                  => ['my-scope', 'my-another-scope'],
+                'scopes' => ['my-scope', 'my-another-scope'],
             ],
         ];
     }
@@ -37,11 +37,11 @@ class DatabaseConfigRepositoryTest extends TestCase
     protected function storeDefaultConfig()
     {
         DB::table('oauth_tokens')->insert([
-            'provider'     => 'zoho',
-            'owner_id'     => 1,
-            'owner_type'   => (new User)->getMorphClass(),
+            'provider' => 'zoho',
+            'owner_id' => 1,
+            'owner_type' => (new User())->getMorphClass(),
             'access_token' => 'token',
-            'config'       => Crypt::encrypt($this->defaultConfig()),
+            'config' => Crypt::encrypt($this->defaultConfig()),
         ]);
     }
 
@@ -52,7 +52,7 @@ class DatabaseConfigRepositoryTest extends TestCase
 
         $this->storeDefaultConfig();
 
-        $this->assertEquals($this->defaultConfig(), $repository->get(),);
+        $this->assertEquals($this->defaultConfig(), $repository->get(), );
     }
 
     /** @test */

@@ -65,14 +65,14 @@ class ZohoUrlFactory
         $region = $this->config->region() ?? 'US';
 
         return [
-            'authorization_url'       => [
+            'authorization_url' => [
                 'EU' => 'https://accounts.zoho.eu/oauth/v2/auth',
                 'US' => 'https://accounts.zoho.com/oauth/v2/auth',
                 'IN' => 'https://accounts.zoho.in/oauth/v2/auth',
                 'AU' => 'https://accounts.zoho.com.au/oauth/v2/auth',
                 'CN' => 'https://accounts.zoho.com.cn/oauth/v2/auth',
             ],
-            'access_token_url'        => [
+            'access_token_url' => [
                 'EU' => 'https://accounts.zoho.eu/oauth/v2/token',
                 'US' => 'https://accounts.zoho.com/oauth/v2/token',
                 'IN' => 'https://accounts.zoho.in/oauth/v2/token',
@@ -92,6 +92,7 @@ class ZohoUrlFactory
     protected function books(string $url)
     {
         $url = Str::finish($this->baseApiUrl(ZohoModules::BOOKS), '/') . $url;
+
         return $this->addParameterToUrlQuery($url, 'organization_id', $this->config->currentOrganizationId());
     }
 
@@ -116,14 +117,14 @@ class ZohoUrlFactory
         $region = $this->config->region() ?? 'US';
 
         return [
-            ZohoModules::BOOKS->value   => [
+            ZohoModules::BOOKS->value => [
                 'EU' => 'https://books.zoho.eu/api/v3',
                 'US' => 'https://books.zoho.com/api/v3',
                 'IN' => 'https://books.zoho.in/api/v3',
                 'AU' => 'https://books.zoho.com.au/api/v3',
                 'CN' => 'https://books.zoho.com.cn/api/v3',
             ],
-            ZohoModules::CRM->value     => [
+            ZohoModules::CRM->value => [
                 'EU' => 'https://www.zohoapis.eu/crm/v3',
                 'US' => 'https://www.zohoapis.com/crm/v3',
                 'IN' => 'https://www.zohoapis.in/crm/v3',
@@ -146,10 +147,10 @@ class ZohoUrlFactory
         $organization = $this->config->currentOrganizationId();
 
         return [
-            ZohoModules::BOOKS->value   => [
+            ZohoModules::BOOKS->value => [
                 // Not implemented yet
             ],
-            ZohoModules::CRM->value     => [
+            ZohoModules::CRM->value => [
                 'EU' => "https://crmsandbox.zoho.eu/crm/{$organization}",
                 'US' => "https://crmsandbox.zoho.com/crm/{$organization}",
                 'IN' => "https://crmsandbox.zoho.in/crm/{$organization}",
@@ -168,14 +169,14 @@ class ZohoUrlFactory
         $organization = $this->config->currentOrganizationId();
 
         return [
-            ZohoModules::BOOKS->value   => [
+            ZohoModules::BOOKS->value => [
                 'EU' => 'https://books.zoho.eu/app#',
                 'US' => 'https://books.zoho.com/app#',
                 'IN' => 'https://books.zoho.in/app#',
                 'AU' => 'https://books.zoho.com.au/app#',
                 'CN' => 'https://books.zoho.com.cn/app#',
             ],
-            ZohoModules::CRM->value     => [
+            ZohoModules::CRM->value => [
                 'EU' => "https://crm.zoho.eu/crm/{$organization}",
                 'US' => "https://crm.zoho.com/crm/{$organization}",
                 'IN' => "https://crm.zoho.in/crm/{$organization}",

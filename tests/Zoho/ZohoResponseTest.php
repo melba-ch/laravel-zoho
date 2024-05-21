@@ -6,7 +6,6 @@ use GuzzleHttp\Psr7\Response as Psr7Response;
 use Illuminate\Http\Client\Response;
 use MelbaCh\LaravelZoho\Tests\TestCase;
 
-
 class ZohoResponseTest extends TestCase
 {
     /** @test */
@@ -22,25 +21,25 @@ class ZohoResponseTest extends TestCase
         $body = [
             "users" => [
                 [
-                    "code"    => "SUCCESS",
+                    "code" => "SUCCESS",
                     "details" => [
                     ],
                     "message" => "User updated",
-                    "status"  => "success",
+                    "status" => "success",
                 ],
                 [
-                    "code"    => "ERROR", // Maybe not an actual error
+                    "code" => "ERROR", // Maybe not an actual error
                     "details" => [
                     ],
                     "message" => "User doesn't not exists",
-                    "status"  => "error",
+                    "status" => "error",
                 ],
                 [
-                    "code"    => "ERROR", // Maybe not an actual error
+                    "code" => "ERROR", // Maybe not an actual error
                     "details" => [
                     ],
                     "message" => "User doesn't not exists",
-                    "status"  => "error",
+                    "status" => "error",
                 ],
             ],
         ];
@@ -56,25 +55,25 @@ class ZohoResponseTest extends TestCase
         $body = [
             "users" => [
                 [
-                    "code"    => "SUCCESS",
+                    "code" => "SUCCESS",
                     "details" => [
                     ],
                     "message" => "User updated",
-                    "status"  => "success",
+                    "status" => "success",
                 ],
                 [
-                    "code"    => "ERROR", // Maybe not an actual error
+                    "code" => "ERROR", // Maybe not an actual error
                     "details" => [
                     ],
                     "message" => "User doesn't not exists",
-                    "status"  => "error",
+                    "status" => "error",
                 ],
                 [
-                    "code"    => "ERROR", // Maybe not an actual error
+                    "code" => "ERROR", // Maybe not an actual error
                     "details" => [
                     ],
                     "message" => "User doesn't not exists",
-                    "status"  => "error",
+                    "status" => "error",
                 ],
             ],
         ];
@@ -85,18 +84,18 @@ class ZohoResponseTest extends TestCase
         $this->assertEquals(
             [
                 [
-                    "code"    => "ERROR", // Maybe not an actual error
+                    "code" => "ERROR", // Maybe not an actual error
                     "details" => [
                     ],
                     "message" => "User doesn't not exists",
-                    "status"  => "error",
+                    "status" => "error",
                 ],
                 [
-                    "code"    => "ERROR", // Maybe not an actual error
+                    "code" => "ERROR", // Maybe not an actual error
                     "details" => [
                     ],
                     "message" => "User doesn't not exists",
-                    "status"  => "error",
+                    "status" => "error",
                 ],
             ],
             $response->errorsFromZoho(),

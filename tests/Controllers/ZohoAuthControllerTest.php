@@ -10,18 +10,15 @@ use MelbaCh\LaravelZoho\Repositories\StorageConfigRepository;
 use MelbaCh\LaravelZoho\Tests\TestCase;
 use Mockery\MockInterface;
 
-
 class ZohoAuthControllerTest extends TestCase
 {
-
     use WithoutMiddleware;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->mock(StorageConfigRepository::class, static function (MockInterface $repository)
-        {
+        $this->mock(StorageConfigRepository::class, static function (MockInterface $repository) {
             $repository->shouldReceive('clientId')->andReturn('abc-xyz');
             $repository->shouldReceive('secret')->andReturn('123-789');
             $repository->shouldReceive('region')->andReturn('EU');
@@ -38,14 +35,14 @@ class ZohoAuthControllerTest extends TestCase
 
         $url = 'https://accounts.zoho.eu/oauth/v2/auth';
         $parameters = [
-            'redirect_uri'    => 'http://localhost/oauth2/zoho',
-            'access_type'     => 'offline',
-            'prompt'          => 'consent',
-            'state'           => session('oauth2state'),
-            'scope'           => implode(',', config('zoho.scopes')),
-            'response_type'   => 'code',
+            'redirect_uri' => 'http://localhost/oauth2/zoho',
+            'access_type' => 'offline',
+            'prompt' => 'consent',
+            'state' => session('oauth2state'),
+            'scope' => implode(',', config('zoho.scopes')),
+            'response_type' => 'code',
             'approval_prompt' => 'auto',
-            'client_id'       => 'abc-xyz',
+            'client_id' => 'abc-xyz',
         ];
 
         $query = http_build_query($parameters, null, '&', \PHP_QUERY_RFC3986);
@@ -66,8 +63,7 @@ class ZohoAuthControllerTest extends TestCase
     /** @test */
     public function it_returns_an_error_when_code_doesnt_match_state(): void
     {
-        $this->mock(ZohoAuthProvider::class, static function (MockInterface $provider)
-        {
+        $this->mock(ZohoAuthProvider::class, static function (MockInterface $provider) {
             $token = uniqid('', true);
             $accessToken = new ZohoAccessToken(['access_token' => $token]);
             $provider->shouldReceive('getAccessToken')->andReturn($accessToken);
@@ -96,15 +92,13 @@ class ZohoAuthControllerTest extends TestCase
     public function it_save_the_access_token(): void
     {
         $accessToken = null;
-        $this->mock(ZohoAuthProvider::class, static function (MockInterface $provider) use (&$accessToken)
-        {
+        $this->mock(ZohoAuthProvider::class, static function (MockInterface $provider) use (&$accessToken) {
             $token = uniqid('', true);
             $accessToken = new ZohoAccessToken(['access_token' => $token]);
             $provider->shouldReceive('getAccessToken')->andReturn($accessToken);
         });
 
-        $this->mock(AccessTokenRepository::class, static function (MockInterface $repository) use ($accessToken)
-        {
+        $this->mock(AccessTokenRepository::class, static function (MockInterface $repository) use ($accessToken) {
             $repository->shouldReceive('store')->once()->with($accessToken);
         });
 

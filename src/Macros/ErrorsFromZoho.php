@@ -24,6 +24,7 @@ class ErrorsFromZoho
                     if (is_array($value) && array_key_exists('status', $value)) {
                         return $value['status'] === 'error';
                     }
+
                     return null;
                 })
                 ->values()
