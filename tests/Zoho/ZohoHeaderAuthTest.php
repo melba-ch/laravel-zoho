@@ -11,7 +11,6 @@ use Mockery\MockInterface;
 
 class ZohoHeaderAuthTest extends TestCase
 {
-
     /** @test */
     public function it_adds_the_header(): void
     {

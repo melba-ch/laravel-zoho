@@ -9,14 +9,14 @@ class StorageConfigRepository implements ConfigRepository
     public function __construct()
     {
         $this->config = [
-            'secrets'    => [
+            'secrets' => [
                 'client_id' => config('zoho.client_id'),
-                'secret'    => config('zoho.secret'),
+                'secret' => config('zoho.secret'),
             ],
             'parameters' => [
-                'region'                  => config('zoho.region') ?? 'US',
+                'region' => config('zoho.region') ?? 'US',
                 'current_organization_id' => config('zoho.current_organization_id'),
-                'scopes'                  => config('zoho.scopes', []),
+                'scopes' => config('zoho.scopes', []),
             ],
         ];
     }

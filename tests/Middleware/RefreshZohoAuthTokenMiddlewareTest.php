@@ -16,10 +16,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RefreshZohoAuthTokenMiddlewareTest extends TestCase
 {
-
     private function createRequest($method, $uri): Request
     {
         $symfonyRequest = SymfonyRequest::create($uri, $method);
+
         return Request::createFromBase($symfonyRequest);
     }
 
@@ -31,7 +31,7 @@ class RefreshZohoAuthTokenMiddlewareTest extends TestCase
         $repository = app(StorageAccessTokenRepository::class);
 
         $token = uniqid('', true);
-        $accessToken = new ZohoAccessToken(['access_token' => $token, 'expires_in_sec' => - 1000]);
+        $accessToken = new ZohoAccessToken(['access_token' => $token, 'expires_in_sec' => -1000]);
 
         $repository->store($accessToken);
 
@@ -46,14 +46,14 @@ class RefreshZohoAuthTokenMiddlewareTest extends TestCase
         $response = app(RefreshZohoAuthToken::class)
             ->handle(
                 $this->createRequest('get', '/'),
-                fn() => new Response(),
+                fn () => new Response(),
             );
 
         // Assert
         $this->assertEquals($expectedToken, $repository->get()->getToken());
         $this->assertNotEquals($token, $repository->get()->getToken());
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertFalse( $response->isRedirect());
+        $this->assertFalse($response->isRedirect());
     }
 
     /** @test */
@@ -63,7 +63,7 @@ class RefreshZohoAuthTokenMiddlewareTest extends TestCase
         Storage::fake(config('zoho.access_token_disk'));
 
         // Expectations
-        $this->mock(AccessTokenRepository::class, static function (MockInterface $repository)  {
+        $this->mock(AccessTokenRepository::class, static function (MockInterface $repository) {
             $repository->shouldReceive('get')->once()->andReturn(null);
             $repository->shouldNotReceive('store');
         });
@@ -75,12 +75,12 @@ class RefreshZohoAuthTokenMiddlewareTest extends TestCase
         $response = app(RefreshZohoAuthToken::class)
             ->handle(
                 $this->createRequest('get', '/'),
-                fn() => new Response(),
+                fn () => new Response(),
             );
 
         // Assert
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertFalse( $response->isRedirect());
+        $this->assertFalse($response->isRedirect());
     }
 
     /** @test */
@@ -91,7 +91,7 @@ class RefreshZohoAuthTokenMiddlewareTest extends TestCase
         $repository = app(StorageAccessTokenRepository::class);
 
         $token = uniqid('', true);
-        $accessToken = new ZohoAccessToken(['access_token' => $token, 'expires_in_sec' => + 1000]);
+        $accessToken = new ZohoAccessToken(['access_token' => $token, 'expires_in_sec' => +1000]);
 
         $repository->store($accessToken);
 
@@ -104,13 +104,13 @@ class RefreshZohoAuthTokenMiddlewareTest extends TestCase
         $response = app(RefreshZohoAuthToken::class)
             ->handle(
                 $this->createRequest('get', '/'),
-                fn() => new Response(),
+                fn () => new Response(),
             );
 
         // Assert
         $this->assertEquals($token, $repository->get()->getToken());
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertFalse( $response->isRedirect());
+        $this->assertFalse($response->isRedirect());
     }
 
 }

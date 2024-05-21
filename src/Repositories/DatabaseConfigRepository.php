@@ -46,6 +46,7 @@ class DatabaseConfigRepository implements ConfigRepository
         $config = $this->get();
         $config['parameters']['scopes'] = $scopes;
         $this->store($config);
+
         return $this;
     }
 
@@ -70,8 +71,8 @@ class DatabaseConfigRepository implements ConfigRepository
 
         DB::table('oauth_tokens')
             ->updateOrInsert([
-                'provider'   => self::Provider,
-                'owner_id'   => $this->ownerId(),
+                'provider' => self::Provider,
+                'owner_id' => $this->ownerId(),
                 'owner_type' => $this->ownerType(),
             ], [
                 'config' => Crypt::encrypt($config),
@@ -101,6 +102,7 @@ class DatabaseConfigRepository implements ConfigRepository
     {
         /** @var Model $user */
         $user = Auth::guard(config('zoho.auth_guard'))->user();
+
         return $user?->getMorphClass();
     }
 }

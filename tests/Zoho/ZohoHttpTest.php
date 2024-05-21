@@ -2,7 +2,6 @@
 
 namespace MelbaCh\LaravelZoho\Tests\Zoho;
 
-use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use MelbaCh\LaravelZoho\Auth\ZohoAccessToken;
 use MelbaCh\LaravelZoho\Auth\ZohoAuthProvider;
@@ -37,17 +36,17 @@ class ZohoHttpTest extends TestCase
     protected array $fakeResponse = [
         "users" => [
             [
-                "country"    => "US",
-                "street"     => null,
-                "id"         => "4150868000000225013",
+                "country" => "US",
+                "street" => null,
+                "id" => "4150868000000225013",
                 "first_name" => "Patricia",
-                "last_name"  => "Boyle",
+                "last_name" => "Boyle",
             ],
         ],
-        "info"  => [
-            "per_page"     => 200,
-            "count"        => 3,
-            "page"         => 1,
+        "info" => [
+            "per_page" => 200,
+            "count" => 3,
+            "page" => 1,
             "more_records" => false,
         ],
     ];

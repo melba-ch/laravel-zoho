@@ -19,7 +19,7 @@ class DatabaseAccessTokenRepositoryTest extends TestCase
 
         Auth::shouldReceive('guard')->andReturnSelf();
         Auth::shouldReceive('id')->andReturn(1);
-        Auth::shouldReceive('user')->andReturn(new User);
+        Auth::shouldReceive('user')->andReturn(new User());
     }
 
     /** @test */
@@ -29,11 +29,11 @@ class DatabaseAccessTokenRepositoryTest extends TestCase
         $accessToken = new ZohoAccessToken(['access_token' => $token]);
 
         DB::table('oauth_tokens')->insert([
-            'provider'     => 'zoho',
-            'owner_id'     => 1,
-            'owner_type'   => (new User)->getMorphClass(),
+            'provider' => 'zoho',
+            'owner_id' => 1,
+            'owner_type' => (new User())->getMorphClass(),
             'access_token' => Crypt::encrypt($accessToken),
-            'config'       => null,
+            'config' => null,
         ]);
 
         $repository = app(DatabaseAccessTokenRepository::class);
@@ -55,11 +55,11 @@ class DatabaseAccessTokenRepositoryTest extends TestCase
         $accessToken = new ZohoAccessToken(['access_token' => $token]);
 
         DB::table('oauth_tokens')->insert([
-            'provider'     => 'zoho',
-            'owner_id'     => 1,
-            'owner_type'   => (new User)->getMorphClass(),
+            'provider' => 'zoho',
+            'owner_id' => 1,
+            'owner_type' => (new User())->getMorphClass(),
             'access_token' => Crypt::encrypt($accessToken),
-            'config'       => null,
+            'config' => null,
         ]);
 
         $repository = app(DatabaseAccessTokenRepository::class);
@@ -81,7 +81,7 @@ class DatabaseAccessTokenRepositoryTest extends TestCase
         $record = DB::table('oauth_tokens')
             ->where('provider', 'zoho')
             ->where('owner_id', 1)
-            ->where('owner_type', (new User)->getMorphClass())
+            ->where('owner_type', (new User())->getMorphClass())
             ->first();
 
         $accessToken = Crypt::decrypt($record->access_token);
@@ -97,11 +97,11 @@ class DatabaseAccessTokenRepositoryTest extends TestCase
         $accessToken = new ZohoAccessToken(['access_token' => $token]);
 
         DB::table('oauth_tokens')->insert([
-            'provider'     => 'zoho',
-            'owner_id'     => 1,
-            'owner_type'   => (new User)->getMorphClass(),
+            'provider' => 'zoho',
+            'owner_id' => 1,
+            'owner_type' => (new User())->getMorphClass(),
             'access_token' => Crypt::encrypt($accessToken),
-            'config'       => null,
+            'config' => null,
         ]);
 
         $repository = app(DatabaseAccessTokenRepository::class);

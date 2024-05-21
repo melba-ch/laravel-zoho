@@ -8,7 +8,6 @@ use League\OAuth2\Client\Token\AccessTokenInterface;
 
 class StorageAccessTokenRepository implements AccessTokenRepository
 {
-
     public function store(AccessTokenInterface $accessToken): AccessTokenRepository
     {
         $hash = Crypt::encrypt($accessToken);
