@@ -154,7 +154,7 @@ class ZohoUrlFactory
                 'EU' => "https://crmsandbox.zoho.eu/crm/{$organization}",
                 'US' => "https://crmsandbox.zoho.com/crm/{$organization}",
                 'IN' => "https://crmsandbox.zoho.in/crm/{$organization}",
-                'AU' => "https://crmsandbox.zoho.com.eu/crm/{$organization}",
+                'AU' => "https://crmsandbox.zoho.com.au/crm/{$organization}",
                 'CN' => "https://crmsandbox.zoho.com.cn/crm/{$organization}",
             ],
             ZohoModules::RECRUIT->value => [
@@ -180,14 +180,14 @@ class ZohoUrlFactory
                 'EU' => "https://crm.zoho.eu/crm/{$organization}",
                 'US' => "https://crm.zoho.com/crm/{$organization}",
                 'IN' => "https://crm.zoho.in/crm/{$organization}",
-                'AU' => "https://crm.zoho.com.eu/crm/{$organization}",
+                'AU' => "https://crm.zoho.com.au/crm/{$organization}",
                 'CN' => "https://crm.zoho.com.cn/crm/{$organization}",
             ],
             ZohoModules::RECRUIT->value => [
                 'EU' => "https://recruit.zoho.eu/recruit/{$organization}",
                 'US' => "https://recruit.zoho.com/recruit/{$organization}",
                 'IN' => "https://recruit.zoho.in/recruit/{$organization}",
-                'AU' => "https://recruit.zoho.com.eu/recruit/{$organization}",
+                'AU' => "https://recruit.zoho.com.au/recruit/{$organization}",
                 'CN' => "https://recruit.zoho.com.cn/recruit/{$organization}",
             ],
         ][$module->value][$region];
