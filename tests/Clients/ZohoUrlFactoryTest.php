@@ -26,7 +26,7 @@ class ZohoUrlFactoryTest extends TestCase
         $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
-            'https://www.zohoapis.eu/crm/v6/users/4',
+            'https://www.zohoapis.eu/crm/v8/users/4',
             $urlFactory->api(ZohoModules::CRM, '/users/4')
         );
 
@@ -47,7 +47,7 @@ class ZohoUrlFactoryTest extends TestCase
         $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
-            'https://www.zohoapis.eu/crm/v6',
+            'https://www.zohoapis.eu/crm/v8',
             invade($urlFactory)->baseApiUrl(ZohoModules::CRM)
         );
 
@@ -126,7 +126,7 @@ class ZohoUrlFactoryTest extends TestCase
         $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
-            'https://www.zohoapis.eu/crm/v6/users/4',
+            'https://www.zohoapis.eu/crm/v8/users/4',
             $urlFactory->api(ZohoModules::CRM, '/users/4')
         );
 
@@ -168,7 +168,7 @@ class ZohoUrlFactoryTest extends TestCase
         $urlFactory = app(ZohoUrlFactory::class);
 
         $this->assertEquals(
-            'https://www.zohoapis.eu/crm/v6/users/4?foo=1&bar=2&baz=3',
+            'https://www.zohoapis.eu/crm/v8/users/4?foo=1&bar=2&baz=3',
             $urlFactory->api(ZohoModules::CRM, '/users/4', [
                 'foo' => 1,
                 'bar' => 2,
@@ -177,7 +177,7 @@ class ZohoUrlFactoryTest extends TestCase
         );
 
         $this->assertEquals(
-            'https://www.zohoapis.eu/crm/v6/users/4?foo=1&bar=2&baz=3',
+            'https://www.zohoapis.eu/crm/v8/users/4?foo=1&bar=2&baz=3',
             $urlFactory->api(ZohoModules::CRM, '/users/4?foo=1', [
                 'bar' => 2,
                 'baz' => 3,
