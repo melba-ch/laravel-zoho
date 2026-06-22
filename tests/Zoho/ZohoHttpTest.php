@@ -68,7 +68,7 @@ class ZohoHttpTest extends TestCase
     public function it_can_make_a_request_zoho_url_facade(): void
     {
         Http::fake([
-            'https://www.zohoapis.com/crm/v6/users' => Http::response($this->fakeResponse),
+            'https://www.zohoapis.com/crm/v8/users' => Http::response($this->fakeResponse),
         ]);
 
         $this->assertEquals(
