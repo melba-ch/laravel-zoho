@@ -207,8 +207,8 @@ class ZohoAuthProviderTest extends TestCase
         $stream = $this->mock(StreamInterface::class, static function (MockInterface $stream) {
             $stream->shouldReceive('__toString')->andReturn(json_encode([
                 'access_token' => 'mock_access_token',
-                'token_type'   => 'bearer',
-                'code'         => 'SUCCESS',
+                'token_type' => 'bearer',
+                'code' => 'SUCCESS',
             ]));
         });
 
