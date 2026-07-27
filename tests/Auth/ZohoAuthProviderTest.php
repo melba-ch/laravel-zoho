@@ -194,4 +194,76 @@ class ZohoAuthProviderTest extends TestCase
 
         $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
     }
+
+    /**
+     * @test
+     *
+     * @throws Exception
+     */
+    public function a_successful_response_carrying_a_code_key_is_not_treated_as_an_error(): void
+    {
+        // Zoho returns a `code` key on many valid HTTP 200 payloads (eg. "SUCCESS").
+        // It must not be mistaken for an error signal, only an `error` key (or status >= 400) is.
+        $stream = $this->mock(StreamInterface::class, static function (MockInterface $stream) {
+            $stream->shouldReceive('__toString')->andReturn(json_encode([
+                'access_token' => 'mock_access_token',
+                'token_type'   => 'bearer',
+                'code'         => 'SUCCESS',
+            ]));
+        });
+
+        $response = $this->mock(ResponseInterface::class, static function (MockInterface $response) use ($stream) {
+            $response->shouldReceive('getBody')->andReturn($stream);
+            $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
+            $response->shouldReceive('getStatusCode')->andReturn(200);
+        });
+
+        $client = $this->mock(ClientInterface::class, static function (MockInterface $client) use ($response) {
+            $client->shouldReceive('send')->times(1)->andReturn($response);
+        });
+
+        $this->provider->setHttpClient($client);
+
+        $token = $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
+
+        $this->assertEquals('mock_access_token', $token->getToken());
+    }
+
+    /**
+     * @test
+     *
+     * @throws Exception
+     */
+    public function exception_is_thrown_when_error_response_lacks_a_code_key(): void
+    {
+        // Zoho sometimes answers HTTP >= 400 with only an "error" key (no "code"/"message").
+        // This used to raise an "Undefined array key" ErrorException instead of a proper
+        // IdentityProviderException, masking the real error and escaping typed catch blocks.
+        $status = random_int(400, 600);
+        $body = ['error' => 'invalid_code'];
+
+        $stream = $this->mock(StreamInterface::class, static function (MockInterface $stream) use ($body) {
+            $stream->shouldReceive('__toString')->andReturn(json_encode($body));
+        });
+
+        $response = $this->mock(
+            ResponseInterface::class,
+            static function (MockInterface $response) use ($status, $stream) {
+                $response->shouldReceive('getBody')->andReturn($stream);
+                $response->shouldReceive('getHeader')->andReturn(['content-type' => 'json']);
+                $response->shouldReceive('getStatusCode')->andReturn($status);
+            }
+        );
+
+        $client = $this->mock(ClientInterface::class, static function (MockInterface $client) use ($response) {
+            $client->shouldReceive('send')->times(1)->andReturn($response);
+        });
+
+        $this->provider->setHttpClient($client);
+
+        $this->expectException(IdentityProviderException::class);
+        $this->expectExceptionMessage('invalid_code');
+
+        $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
+    }
 }
