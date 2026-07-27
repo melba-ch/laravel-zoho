@@ -92,25 +92,25 @@ class ZohoAuthProvider extends AbstractProvider
      */
     protected function checkResponse(ResponseInterface $response, $data): void
     {
-        if ($response->getStatusCode() >= 400) {
-            throw new IdentityProviderException(
-                sprintf('There was an error on response: %s', $data['code']),
-                $response->getStatusCode(),
-                $data['message']
-            );
+        $isError = $response->getStatusCode() >= 400
+            || (is_array($data) && array_key_exists('error', $data));
+
+        if (! $isError) {
+            return;
         }
 
-        if (array_key_exists('error', $data)) {
-            throw new IdentityProviderException(
-                sprintf('There was an error on response: %s', $data['error']),
-                match ($data['error']) {
-                    'invalid_client_secret', 'invalid_code', 'invalid_client' => 403,
-                    default => 500
-                },
-                $data['error']
-            );
-        }
+        $error = is_array($data)
+            ? ($data['error'] ?? $data['code'] ?? null)
+            : null;
 
+        throw new IdentityProviderException(
+            sprintf('There was an error on response: %s', $error ?? 'unknown'),
+            match ($error) {
+                'invalid_client_secret', 'invalid_code', 'invalid_client' => 403,
+                default => $response->getStatusCode() >= 400 ? $response->getStatusCode() : 500,
+            },
+            $data
+        );
     }
 
     /**
